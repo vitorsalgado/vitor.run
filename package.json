@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "e2e:blog": "node scripts/e2e-blog.mjs",
+    "e2e:blog": "node e2e/e2e-blog.mjs",
     "e2e": "playwright test",
     "e2e:install": "playwright install chromium"
   },
