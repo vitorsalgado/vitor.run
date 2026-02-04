@@ -13,12 +13,12 @@ test.describe('Blog', () => {
       timeout: 10_000,
     })
     await expect(page.getByText(/This is your first blog post/)).toBeVisible()
-    await expect(page.getByText(/markdown/)).toBeVisible()
+    await expect(page.locator('article').getByText(/markdown/).first()).toBeVisible()
   })
 
   test('blog post has SEO meta', async ({ page }) => {
     await page.goto('/blog/hello-world')
-    await expect(page.getByRole('heading', { name: 'Hello World' })).toBeVisible({
+    await expect(page.getByRole('heading', { name: 'Hello World', level: 1 })).toBeVisible({
       timeout: 10_000,
     })
     const title = await page.title()

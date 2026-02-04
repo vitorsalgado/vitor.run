@@ -1,23 +1,29 @@
 import { defineConfig, devices } from '@playwright/test'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const PREVIEW_PORT = 35173
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const PREVIEW_PORT = parseInt(process.env.PREVIEW_PORT ?? '4175', 10)
+const BASE_URL = `http://localhost:${PREVIEW_PORT}`
 
 export default defineConfig({
   testDir: './e2e',
+  testMatch: /\.spec\.ts$/,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: 'list',
+  globalSetup: join(__dirname, 'e2e', 'global-setup.mjs'),
   use: {
-    baseURL: `http://127.0.0.1:${PREVIEW_PORT}`,
+    baseURL: BASE_URL,
     trace: 'on-first-retry',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: `npm run build && npx vite preview --port ${PREVIEW_PORT}`,
-    url: `http://127.0.0.1:${PREVIEW_PORT}/`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 90_000,
+    command: `npx vite preview --port ${PREVIEW_PORT} --strictPort`,
+    url: `${BASE_URL}/`,
+    reuseExistingServer: true,
+    timeout: 15_000,
   },
 })
