@@ -50,7 +50,12 @@ export function BlogPost() {
 
   return (
     <article className="max-w-2xl mx-auto px-6 py-16">
-      <PageMeta title={post.meta.title} description={post.meta.description} canonicalPath={`/blog/${post.slug}`} />
+      <PageMeta
+        title={post.meta.title}
+        description={post.meta.description}
+        canonicalPath={`/blog/${post.slug}`}
+        keywords={post.meta.tags}
+      />
       <Link
         to="/blog"
         className="text-sm text-slate-500 hover:text-slate-900 mb-6 inline-block"
@@ -87,6 +92,24 @@ export function BlogPost() {
           {post.content}
         </ReactMarkdown>
       </div>
+      {post.meta.tags && post.meta.tags.length > 0 && (
+        <footer className="mt-10 pt-6 border-t border-slate-100 text-left">
+          <nav aria-label="Post tags">
+            <ul className="flex flex-wrap gap-2 list-none p-0 m-0">
+              {post.meta.tags.map((tag) => (
+                <li key={tag}>
+                  <Link
+                    to={`/blog?tag=${encodeURIComponent(tag)}`}
+                    className="inline-block px-3 py-1 rounded-full text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                  >
+                    {tag}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </footer>
+      )}
     </article>
   )
 }

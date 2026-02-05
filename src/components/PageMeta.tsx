@@ -7,13 +7,15 @@ type PageMetaProps = {
   description?: string
   /** Path for canonical URL (e.g. /blog/hello-world). Uses origin from window.location. */
   canonicalPath?: string
+  /** Comma-separated or array of keywords for meta keywords (e.g. post tags). */
+  keywords?: string | string[]
 }
 
 /**
  * Sets document title, meta description, canonical URL, and Open Graph tags for SEO.
  * Use on each page so crawlers and social sharing get the right title/description.
  */
-export function PageMeta({ title, description, canonicalPath }: PageMetaProps) {
+export function PageMeta({ title, description, canonicalPath, keywords }: PageMetaProps) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME
     const origin = window.location.origin
@@ -34,6 +36,20 @@ export function PageMeta({ title, description, canonicalPath }: PageMetaProps) {
     }
 
     setMeta('description', description ?? '')
+    const keywordsStr = Array.isArray(keywords) ? keywords.join(', ') : (keywords ?? '')
+    const kwEl = document.querySelector<HTMLMetaElement>('meta[name="keywords"]')
+    if (keywordsStr) {
+      if (!kwEl) {
+        const el = document.createElement('meta')
+        el.name = 'keywords'
+        document.head.appendChild(el)
+        el.content = keywordsStr
+      } else {
+        kwEl.content = keywordsStr
+      }
+    } else if (kwEl) {
+      kwEl.remove()
+    }
     setMeta('og:title', fullTitle, 'property')
     setMeta('og:description', description ?? '', 'property')
     setMeta('og:url', canonicalUrl, 'property')
@@ -57,7 +73,7 @@ export function PageMeta({ title, description, canonicalPath }: PageMetaProps) {
     return () => {
       document.title = SITE_NAME
     }
-  }, [title, description, canonicalPath])
+  }, [title, description, canonicalPath, keywords])
 
   return null
 }
