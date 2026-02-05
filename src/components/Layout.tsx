@@ -1,4 +1,4 @@
-import { Heart, Mail, Rss } from 'lucide-react'
+import { Heart, Mail, Rss, TentTree } from 'lucide-react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { SocialLinks } from './SocialLinks'
 
@@ -14,6 +14,13 @@ export function Layout() {
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <nav className="max-w-3xl mx-auto px-6 py-4 flex flex-wrap justify-center items-center gap-8">
+          <Link
+            to="/"
+            className="text-slate-500 hover:text-slate-900 transition-colors shrink-0 -ml-2 mr-2"
+            aria-label="Home"
+          >
+            <TentTree size={24} strokeWidth={1.5} aria-hidden />
+          </Link>
           {navLinks.map(({ to, label }) => (
             <Link
               key={to}
