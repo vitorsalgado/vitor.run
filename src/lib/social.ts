@@ -17,4 +17,9 @@ export const socialLinks = [
     href: 'https://github.com/vitorsalgado',
     label: 'GitHub',
   },
+  {
+    platform: 'Unsplash',
+    href: 'https://unsplash.com/@vitorsalgado',
+    label: 'Unsplash',
+  },
 ] as const

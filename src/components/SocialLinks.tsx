@@ -1,23 +1,26 @@
-import { Github, Instagram, Linkedin } from 'lucide-react'
+import { Github, Instagram, Linkedin, Camera } from 'lucide-react'
 import { socialLinks } from '../lib/social'
 
 const iconMap = {
   Instagram,
   LinkedIn: Linkedin,
   GitHub: Github,
+  Unsplash: Camera,
 } as const
 
 type SocialLinksProps = {
   className?: string
+  variant?: 'default' | 'compact'
 }
 
-export function SocialLinks({ className = '' }: SocialLinksProps) {
+export function SocialLinks({ className = '', variant = 'default' }: SocialLinksProps) {
+  const isCompact = variant === 'compact'
   return (
     <nav
       className={className}
       aria-label="Social links"
     >
-      <ul className="flex justify-center gap-6">
+      <ul className={`flex ${isCompact ? 'gap-4' : 'justify-center gap-6'}`}>
         {socialLinks.map(({ platform, href, label }) => {
           const Icon = iconMap[platform]
           return (
@@ -29,7 +32,7 @@ export function SocialLinks({ className = '' }: SocialLinksProps) {
                 className="text-slate-500 hover:text-slate-900 transition-colors"
                 aria-label={label}
               >
-                <Icon size={24} strokeWidth={1.5} aria-hidden />
+                <Icon size={isCompact ? 20 : 24} strokeWidth={1.5} aria-hidden />
               </a>
             </li>
           )
