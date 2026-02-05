@@ -66,6 +66,11 @@ export function BlogPost() {
         <h1 className="text-3xl font-bold text-slate-900 mb-2">
           {post.meta.title}
         </h1>
+        {post.meta.description && (
+          <p className="text-lg text-slate-600 font-normal mb-2 leading-relaxed">
+            {post.meta.description}
+          </p>
+        )}
         <time
           dateTime={post.meta.date}
           className="text-sm text-slate-500"

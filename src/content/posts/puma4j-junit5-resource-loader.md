@@ -1,5 +1,6 @@
 ---
 title: Puma4j — An easy way to load file resources into JUnit 5 tests
+slug: puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-5-tests
 date: 2022-02-01
 description: Load and parse file resources into JUnit 5 tests with just a couple of annotations.
 icon: Lightbulb
@@ -81,5 +82,7 @@ We can use a custom converter for your resources. Implement the interface `Unmar
 ### Switching JSON Converters
 
 By default, Puma4j uses Jackson Object Mapper to convert JSON resources into Java objects. To switch to Gson, use the annotation **@UseGson**. The annotation can be applied to class, field, and method parameters. In addition, there is **@UseJackson** to force a specific resource to use Object Mapper.
+
+---
 
 Take a look at the project documentation and source code on [GitHub](https://github.com/vitorsalgado/puma4j).

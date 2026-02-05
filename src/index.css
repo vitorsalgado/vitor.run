@@ -90,13 +90,29 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
+.prose h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
 .prose p {
   margin-bottom: 1rem;
 }
 
-.prose ul, .prose ol {
+.prose ul {
   margin-bottom: 1rem;
   padding-left: 1.5rem;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+.prose ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  list-style-type: decimal;
+  list-style-position: outside;
 }
 
 .prose li {
@@ -115,14 +131,25 @@ a:hover {
   background-color: #1e293b;
   color: #e2e8f0;
   border-radius: 0.5rem;
-  overflow-x: auto;
   margin-bottom: 1rem;
+}
+
+/* Only code blocks (pre > code): wrap long lines, no horizontal scroll */
+.prose pre:has(> code) {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
 }
 
 .prose pre code {
   padding: 0;
   background: none;
   color: inherit;
+}
+
+.prose pre:has(> code) code {
+  white-space: inherit;
+  overflow-wrap: inherit;
 }
 
 .prose blockquote {

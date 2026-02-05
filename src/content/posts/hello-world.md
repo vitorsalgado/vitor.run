@@ -1,5 +1,6 @@
 ---
 title: Hello World
+slug: hello-world
 date: 2025-02-03
 description: A first post to get the blog started.
 icon: FileText

@@ -7,6 +7,8 @@ export interface PostMeta {
   tags?: string[]
   /** Lucide icon name (e.g. FileText, BookOpen, Coffee). */
   icon?: string
+  /** URL slug for the post (from frontmatter). Required. Used in /blog/:slug. */
+  slug: string
 }
 
 export interface Post {
@@ -25,14 +27,14 @@ const postModules = import.meta.glob<string>('../content/posts/*.md', {
   import: 'default',
 })
 
-function slugFromPath(path: string): string {
-  const name = path.split('/').pop() ?? path
-  return name.replace(/\.md$/, '')
-}
-
 function parsePost(path: string, raw: string): Post {
-  const slug = slugFromPath(path)
   const { data, content: body } = matter(raw)
+  const slugRaw = data.slug
+  if (typeof slugRaw !== 'string' || slugRaw.trim() === '') {
+    const file = path.split('/').pop() ?? path
+    throw new Error(`Post is missing required frontmatter "slug": ${file}`)
+  }
+  const slug = slugRaw.trim()
   return {
     slug,
     meta: {
@@ -41,6 +43,7 @@ function parsePost(path: string, raw: string): Post {
       description: data.description as string | undefined,
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : undefined,
       icon: typeof data.icon === 'string' ? data.icon : undefined,
+      slug,
     },
     content: body,
   }
