@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vitor.run Blog</title>
+    <link>https://vitor.run/blog</link>
+    <description>Blog posts from vitor.run</description>
+    <language>en</language>
+    <atom:link href="https://vitor.run/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>My Post</title>
+      <link>https://vitor.run/blog/new-post</link>
+      <guid isPermaLink="true">https://vitor.run/blog/new-post</guid>
+      <pubDate>Tue, 04 Feb 2025 00:00:00 GMT</pubDate>
+      <description>A post about React.</description>
+    </item>
+    <item>
+      <title>Hello World</title>
+      <link>https://vitor.run/blog/hello-world</link>
+      <guid isPermaLink="true">https://vitor.run/blog/hello-world</guid>
+      <pubDate>Mon, 03 Feb 2025 00:00:00 GMT</pubDate>
+      <description>A first post to get the blog started.</description>
+    </item>
+  </channel>
+</rss>

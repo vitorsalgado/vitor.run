@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/rss.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "e2e:blog": "node e2e/e2e-blog.mjs",

@@ -1,4 +1,4 @@
-import { Heart, Mail } from 'lucide-react'
+import { Heart, Mail, Rss } from 'lucide-react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { SocialLinks } from './SocialLinks'
 
@@ -39,6 +39,15 @@ export function Layout() {
           >
             <Mail size={20} strokeWidth={1.5} aria-hidden />
           </Link>
+          <a
+            href="/rss.xml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-500 hover:text-slate-900 transition-colors"
+            aria-label="RSS feed"
+          >
+            <Rss size={20} strokeWidth={1.5} aria-hidden />
+          </a>
         </nav>
       </header>
       <main className="flex-1">
