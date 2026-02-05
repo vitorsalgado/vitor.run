@@ -41,7 +41,7 @@ export function BlogPost() {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16">
         <p className="text-slate-500 mb-4">Post not found.</p>
-        <Link to="/blog" className="text-slate-900 font-medium hover:underline">
+        <Link to="/blog" className="text-slate-900 font-medium ">
           ← Back to Blog
         </Link>
       </div>

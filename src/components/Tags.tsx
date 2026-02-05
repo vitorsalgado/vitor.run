@@ -19,8 +19,8 @@ export function Tags({ tags }: TagsProps) {
             to="/blog"
             className={`inline-block px-3 py-1 rounded-full text-sm transition-colors ${
               !activeTag
-                ? 'bg-slate-900 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-neutral-950 !text-white'
+                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
             }`}
           >
             All
@@ -32,8 +32,8 @@ export function Tags({ tags }: TagsProps) {
               to={`/blog?tag=${encodeURIComponent(tag)}`}
               className={`inline-block px-3 py-1 rounded-full text-sm transition-colors ${
                 activeTag?.toLowerCase() === tag.toLowerCase()
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-neutral-950 !text-white'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
               }`}
             >
               {tag}

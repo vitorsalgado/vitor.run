@@ -13,7 +13,7 @@ export function Contact() {
         <li>
           <a
             href="mailto:you@example.com"
-            className="text-slate-900 font-medium hover:underline"
+            className="text-slate-900 font-medium"
           >
             Email — you@example.com
           </a>
@@ -23,7 +23,7 @@ export function Contact() {
             href="https://github.com/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-slate-900 font-medium hover:underline"
+            className="text-slate-900 font-medium"
           >
             GitHub — github.com/yourusername
           </a>
@@ -33,7 +33,7 @@ export function Contact() {
             href="https://twitter.com/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-slate-900 font-medium hover:underline"
+            className="text-slate-900 font-medium"
           >
             Twitter / X — @yourusername
           </a>
