@@ -1,14 +1,15 @@
 import { PageMeta } from '../components/PageMeta'
+import { SocialLinks } from '../components/SocialLinks'
+import avatar from '../assets/avatar.jpeg'
 
 export function Home() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16 sm:py-24 text-center">
       <PageMeta title="Home" description="Personal site and blog." />
       <div className="flex justify-center mb-8">
-        {/* Replace src with your photo: /avatar.jpg — add your image to public/avatar.jpg */}
         <img
-          src="/avatar.jpg"
-          alt=""
+          src={avatar}
+          alt="Vitor Hugo Salgado"
           width={160}
           height={160}
           className="w-40 h-40 rounded-full object-cover border-4 border-slate-200 shadow-lg bg-slate-100"
@@ -28,14 +29,15 @@ export function Home() {
         </div>
       </div>
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-3">
-        Your Name
+        Vitor Hugo Salgado
       </h1>
       <p className="text-lg text-slate-600 mb-8 max-w-md mx-auto">
-        Short tagline about yourself — e.g. Developer, maker, open-source enthusiast.
+        Software Engineer — open-source enthusiast.
       </p>
-      <p className="text-slate-500 text-sm max-w-md mx-auto">
-        The people who are crazy enough to think they can change the world are the ones who do.
+      <p className="text-slate-500 text-sm max-w-md mx-auto mb-8">
+        We are what we do, especially what we do to change what we are.
       </p>
+      <SocialLinks />
     </div>
   )
 }
