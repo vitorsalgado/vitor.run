@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PageMeta } from '../components/PageMeta'
 import { Tags } from '../components/Tags'
+import { PostIcon } from '../lib/post-icons'
 import type { Post } from '../lib/posts'
 import { filterPostsByTag, getAllTags, getPosts } from '../lib/posts'
 
@@ -27,7 +28,7 @@ export function Blog() {
   if (error) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16">
-        <h1 className="text-3xl font-bold text-slate-900 mb-8">Blog</h1>
+        <h1 className="text-3xl font-bold text-neutral-900 mb-8">Blog</h1>
         <p className="text-red-600">Failed to load posts.</p>
       </div>
     )
@@ -36,8 +37,8 @@ export function Blog() {
   if (loading) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16">
-        <h1 className="text-3xl font-bold text-slate-900 mb-8">Blog</h1>
-        <p className="text-slate-500">Loading…</p>
+        <h1 className="text-3xl font-bold text-neutral-900 mb-8">Blog</h1>
+        <p className="text-neutral-500">Loading…</p>
       </div>
     )
   }
@@ -49,37 +50,60 @@ export function Blog() {
         description={tagParam ? `Posts tagged with ${tagParam}` : 'Blog posts and updates.'}
         canonicalPath="/blog"
       />
-      <h1 className="text-3xl font-bold text-slate-900 mb-4">Blog</h1>
+      <h1 className="text-3xl font-bold text-neutral-900 mb-4">Blog</h1>
       <Tags tags={allTags} />
       {filteredPosts.length === 0 ? (
-        <p className="text-slate-500">
+        <p className="text-neutral-500">
           {tagParam
             ? `No posts tagged with "${tagParam}".`
-            : 'No posts yet. Add .md files in src/content/posts/ with frontmatter (title, date, optional description, tags).'}
+            : 'No posts yet. Add .md files in src/content/posts/ with frontmatter (title, date, optional description, tags, icon).'}
         </p>
       ) : (
-        <ul className="space-y-6">
+        <ul className="relative space-y-4 pl-8">
+          {/* Vertical line with circles at top and bottom */}
+          <div
+            className="absolute left-4 top-0 bottom-0 w-px bg-neutral-200"
+            aria-hidden
+          />
+          <div
+            className="absolute left-4 top-0 w-2 h-2 rounded-full border-2 border-neutral-400 bg-transparent -translate-x-1/2 -translate-y-1/2 z-10"
+            aria-hidden
+          />
+          <div
+            className="absolute left-4 bottom-0 w-2 h-2 rounded-full border-2 border-neutral-400 bg-transparent -translate-x-1/2 translate-y-1/2 z-10"
+            aria-hidden
+          />
           {filteredPosts.map((post) => (
-            <li key={post.slug} className="border-b border-slate-100 pb-6 last:border-0">
-              <Link
-                to={`/blog/${post.slug}`}
-                className="block group"
-              >
-                <h2 className="text-xl font-semibold text-slate-900 group-hover:text-slate-700 transition-colors">
-                  {post.meta.title}
-                </h2>
+            <li
+              key={post.slug}
+              className="border-b border-neutral-100 pb-6 last:border-0 grid grid-cols-[auto_1fr] gap-4 items-start"
+            >
+              <div className="flex flex-col items-start gap-2 px-4 py-3">
                 <time
                   dateTime={post.meta.date}
-                  className="text-sm text-slate-500 mt-1 block"
+                  className="text-sm text-neutral-500 whitespace-nowrap"
                 >
                   {new Date(post.meta.date).toLocaleDateString('en-US', {
                     year: 'numeric',
-                    month: 'long',
+                    month: 'short',
                     day: 'numeric',
                   })}
                 </time>
+                <PostIcon
+                  name={post.meta.icon}
+                  size={28}
+                  className="text-neutral-400 shrink-0"
+                />
+              </div>
+              <Link
+                to={`/blog/${post.slug}`}
+                className="block -mx-2 -my-1 px-4 py-3 rounded transition-colors hover:bg-neutral-100"
+              >
+                <h2 className="text-xl font-semibold text-neutral-950">
+                  {post.meta.title}
+                </h2>
                 {post.meta.description && (
-                  <p className="text-slate-600 mt-2 text-sm">
+                  <p className="text-neutral-600 mt-2 text-sm">
                     {post.meta.description}
                   </p>
                 )}

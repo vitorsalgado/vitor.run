@@ -5,6 +5,8 @@ export interface PostMeta {
   date: string
   description?: string
   tags?: string[]
+  /** Lucide icon name (e.g. FileText, BookOpen, Coffee). */
+  icon?: string
 }
 
 export interface Post {
@@ -38,6 +40,7 @@ function parsePost(path: string, raw: string): Post {
       date: (data.date as string) ?? '',
       description: data.description as string | undefined,
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : undefined,
+      icon: typeof data.icon === 'string' ? data.icon : undefined,
     },
     content: body,
   }

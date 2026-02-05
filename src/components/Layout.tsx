@@ -12,35 +12,39 @@ export function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-neutral-200/80 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <nav className="max-w-3xl mx-auto px-6 py-4 flex flex-wrap justify-center items-center gap-8">
           <Link
             to="/"
-            className="text-slate-500 hover:text-slate-900 transition-colors shrink-0 -ml-2 mr-2"
+            className={`nav-link shrink-0 p-2 rounded-md -ml-1 ${
+              location.pathname === '/' ? 'nav-link--active-icon' : ''
+            }`}
             aria-label="Home"
           >
             <TentTree size={24} strokeWidth={1.5} aria-hidden />
           </Link>
-          {navLinks.map(({ to, label }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`text-sm font-medium transition-colors ${
-                location.pathname === to || (to !== '/' && location.pathname.startsWith(to))
-                  ? 'text-slate-900'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-          <span className="border-l border-slate-200 h-5" aria-hidden />
+          {navLinks.map(({ to, label }) => {
+            const isActive =
+              location.pathname === to || (to !== '/' && location.pathname.startsWith(to))
+            return (
+              <Link
+                key={to}
+                to={to}
+                className={`nav-link text-sm font-medium px-3 py-2 rounded-md ${
+                  isActive ? 'nav-link--active' : ''
+                }`}
+              >
+                {label}
+              </Link>
+            )
+          })}
+          <span className="border-l border-neutral-200 h-5" aria-hidden />
           <SocialLinks variant="compact" />
-          <span className="border-l border-slate-200 h-5" aria-hidden />
+          <span className="border-l border-neutral-200 h-5" aria-hidden />
           <Link
             to="/contact"
-            className={`text-slate-500 hover:text-slate-900 transition-colors ${
-              location.pathname === '/contact' ? 'text-slate-900' : ''
+            className={`nav-link p-2 rounded-md ${
+              location.pathname === '/contact' ? 'nav-link--active-icon' : ''
             }`}
             aria-label="Contact"
           >
@@ -50,7 +54,7 @@ export function Layout() {
             href="/rss.xml"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-slate-500 hover:text-slate-900 transition-colors"
+            className="nav-link p-2 rounded-md"
             aria-label="RSS feed"
           >
             <Rss size={20} strokeWidth={1.5} aria-hidden />
@@ -60,8 +64,8 @@ export function Layout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <footer className="border-t border-slate-200/80 py-6 text-center text-sm text-slate-500">
-        © {new Date().getFullYear()} — built with <Heart size={14} strokeWidth={2} className="inline-block align-text-bottom relative -top-px text-slate-500" aria-hidden /> in Berlin @ Vitor
+      <footer className="border-t border-neutral-200/80 py-6 text-center text-sm text-neutral-500">
+        © {new Date().getFullYear()} — built with <Heart size={14} strokeWidth={2} className="inline-block align-text-bottom relative -top-px text-neutral-500" aria-hidden /> in Berlin @ Vitor
       </footer>
     </div>
   )
