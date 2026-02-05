@@ -13,7 +13,7 @@ export function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-neutral-200/80 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        <nav className="max-w-3xl mx-auto px-6 py-4 flex flex-wrap justify-center items-center gap-8">
+        <nav className="max-w-3xl mx-auto px-6 py-4 flex flex-wrap justify-center items-center gap-4">
           <Link
             to="/"
             className={`nav-link shrink-0 p-2 rounded-md -ml-1 ${
