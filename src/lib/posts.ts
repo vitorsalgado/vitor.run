@@ -4,6 +4,7 @@ export interface PostMeta {
   title: string
   date: string
   description?: string
+  tags?: string[]
 }
 
 export interface Post {
@@ -36,6 +37,7 @@ function parsePost(path: string, raw: string): Post {
       title: (data.title as string) ?? slug,
       date: (data.date as string) ?? '',
       description: data.description as string | undefined,
+      tags: Array.isArray(data.tags) ? (data.tags as string[]) : undefined,
     },
     content: body,
   }
@@ -51,6 +53,24 @@ function getPostsList(): Post[] {
 /** List all posts (from bundled content). */
 export function getPosts(): Promise<Post[]> {
   return Promise.resolve(getPostsList())
+}
+
+/** Get all unique tags across posts. */
+export function getAllTags(posts: Post[]): string[] {
+  const set = new Set<string>()
+  for (const post of posts) {
+    for (const tag of post.meta.tags ?? []) {
+      if (tag && typeof tag === 'string') set.add(tag)
+    }
+  }
+  return Array.from(set).sort()
+}
+
+/** Filter posts by tag. */
+export function filterPostsByTag(posts: Post[], tag: string): Post[] {
+  return posts.filter((post) =>
+    (post.meta.tags ?? []).some((t) => t.toLowerCase() === tag.toLowerCase())
+  )
 }
 
 /** Get a single post by slug (from bundled content). */
