@@ -12,7 +12,7 @@ import matter from 'gray-matter'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const postsDir = join(root, 'src', 'content', 'posts')
-const outFile = join(root, 'public', 'rss.xml')
+const outFile = join(root, 'dist', 'rss.xml')
 
 const SITE_URL = process.env.SITE_URL || 'https://vitor.run'
 const SITE_NAME = 'vitor.run'
@@ -35,14 +35,14 @@ const files = readdirSync(postsDir).filter((f) => f.endsWith('.md'))
 const posts = files
   .map((f) => {
     const raw = readFileSync(join(postsDir, f), 'utf-8')
-    const { data, content } = matter(raw)
-    const slug = f.replace(/\.md$/, '')
+    const { data } = matter(raw)
+    const slug = typeof data.slug === 'string' && data.slug.trim() ? data.slug.trim() : f.replace(/\.md$/, '')
     return {
       title: (data.title || slug),
       date: data.date || '',
       description: data.description || '',
       slug,
-      link: `${SITE_URL}/blog/${slug}`,
+      link: `${SITE_URL}/blog/${encodeURIComponent(slug)}`,
     }
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

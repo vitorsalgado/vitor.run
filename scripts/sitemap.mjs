@@ -12,7 +12,7 @@ import matter from 'gray-matter'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const postsDir = join(root, 'src', 'content', 'posts')
-const outFile = join(root, 'public', 'sitemap.xml')
+const outFile = join(root, 'dist', 'sitemap.xml')
 
 const SITE_URL = process.env.SITE_URL || 'https://vitor.run'
 

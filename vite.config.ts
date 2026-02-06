@@ -42,6 +42,7 @@ function spaFallback() {
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/', // Served at root for vitor.run
   plugins: [react(), tailwindcss(), spaFallback()],
   resolve: {
     alias: {
