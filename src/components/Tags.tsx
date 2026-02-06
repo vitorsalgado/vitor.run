@@ -11,7 +11,7 @@ export function Tags({ tags }: TagsProps) {
   if (tags.length === 0) return null
 
   return (
-    <ul className="flex flex-wrap gap-2">
+    <ul className="flex flex-wrap gap-2 justify-center">
         <li>
           <Link
             to="/blog"
@@ -27,7 +27,7 @@ export function Tags({ tags }: TagsProps) {
         {tags.map((tag) => (
           <li key={tag}>
             <Link
-              to={`/blog?tag=${encodeURIComponent(tag)}`}
+              to={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
               className={`inline-block px-3 py-1 rounded-full text-sm transition-colors ${
                 activeTag?.toLowerCase() === tag.toLowerCase()
                   ? 'bg-neutral-900 !text-white dark:bg-white dark:!text-neutral-900'

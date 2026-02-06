@@ -7,6 +7,7 @@ This site is a static personal site with a blog. The homepage introduces the aut
 ## Main
 
 - [Home](https://vitor.run/)
+- [About](https://vitor.run/about)
 - [Blog](https://vitor.run/blog)
 - [Contact](https://vitor.run/contact)
 

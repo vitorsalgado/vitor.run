@@ -3,11 +3,6 @@
  */
 export const socialLinks = [
   {
-    platform: 'Instagram',
-    href: 'https://instagram.com/vtrsalgado',
-    label: 'Instagram',
-  },
-  {
     platform: 'LinkedIn',
     href: 'https://linkedin.com/in/vitorsalgado',
     label: 'LinkedIn',

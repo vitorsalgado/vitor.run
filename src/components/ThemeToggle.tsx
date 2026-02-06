@@ -1,12 +1,8 @@
 import { Moon, Sun } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export function ThemeToggle() {
   const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'))
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains('dark'))
-  }, [])
 
   const toggle = () => {
     const next = !document.documentElement.classList.contains('dark')
@@ -19,7 +15,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="nav-link p-2 rounded-md"
+      className="nav-link p-2 rounded-md cursor-pointer"
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       {dark ? (

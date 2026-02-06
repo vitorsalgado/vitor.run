@@ -3,12 +3,11 @@ title: Puma4j — An easy way to load file resources into JUnit 5 tests
 slug: puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-5-tests
 date: 2022-02-01
 description: Load and parse file resources into JUnit 5 tests with just a couple of annotations.
-icon: Lightbulb
+language: EN
 tags:
+  - tech
   - java
   - testing
-  - junit
-  - open-source
 ---
 
 Hello developers, in this post I want to present **Puma4j**, a new open source project I recently published that I hope will make your life writing **JUnit 5** tests a little bit easier.

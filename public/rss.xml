@@ -20,5 +20,12 @@
       <pubDate>Mon, 03 Feb 2025 00:00:00 GMT</pubDate>
       <description>A first post to get the blog started.</description>
     </item>
+    <item>
+      <title>Puma4j — An easy way to load file resources into JUnit 5 tests</title>
+      <link>https://vitor.run/blog/puma4j-junit5-resource-loader</link>
+      <guid isPermaLink="true">https://vitor.run/blog/puma4j-junit5-resource-loader</guid>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 GMT</pubDate>
+      <description>Load and parse file resources into JUnit 5 tests with just a couple of annotations.</description>
+    </item>
   </channel>
 </rss>

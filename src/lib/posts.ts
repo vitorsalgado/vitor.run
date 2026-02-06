@@ -1,12 +1,15 @@
 import matter from 'gray-matter'
+import { getReadTimeMinutes } from './read-time'
 
 export interface PostMeta {
   title: string
   date: string
   description: string
   tags: string[]
-  icon: string
   slug: string
+  language: string
+  /** Read time in minutes, computed at build time from content (text, images, code/diagram blocks). */
+  readTimeMinutes: number
 }
 
 export interface Post {
@@ -27,21 +30,61 @@ const postModules = import.meta.glob<string>('../content/posts/*.md', {
 
 function parsePost(path: string, raw: string): Post {
   const { data, content: body } = matter(raw)
+  const file = path.split('/').pop() ?? path
+
   const slugRaw = data.slug
   if (typeof slugRaw !== 'string' || slugRaw.trim() === '') {
-    const file = path.split('/').pop() ?? path
     throw new Error(`Post is missing required frontmatter "slug": ${file}`)
   }
   const slug = slugRaw.trim()
+
+  const languageRaw = data.language
+  if (typeof languageRaw !== 'string' || languageRaw.trim() === '') {
+    throw new Error(`Post is missing required frontmatter "language": ${file}`)
+  }
+  const language = languageRaw.trim()
+
+  // Handle date parsing - gray-matter might parse dates as Date objects or strings
+  // Date is required and must be valid
+  let dateStr = ''
+  if (!data.date) {
+    throw new Error(`Post is missing required frontmatter "date": ${file}`)
+  }
+
+  if (typeof data.date === 'string') {
+    dateStr = data.date.trim()
+  } else if (data.date instanceof Date) {
+    // Convert Date object to YYYY-MM-DD format
+    const year = data.date.getFullYear()
+    const month = String(data.date.getMonth() + 1).padStart(2, '0')
+    const day = String(data.date.getDate()).padStart(2, '0')
+    dateStr = `${year}-${month}-${day}`
+  } else {
+    dateStr = String(data.date).trim()
+  }
+
+  // Validate date format and ensure it's a valid date
+  if (!dateStr || dateStr.trim() === '') {
+    throw new Error(`Post has empty "date" frontmatter: ${file}`)
+  }
+
+  const dateObj = new Date(dateStr)
+  if (isNaN(dateObj.getTime())) {
+    throw new Error(`Post has invalid "date" frontmatter "${dateStr}": ${file}`)
+  }
+
+  const readTimeMinutes = getReadTimeMinutes(body)
+
   return {
     slug,
     meta: {
-      title: (data.title as string) ?? slug,
-      date: (data.date as string) ?? '',
-      description: (data.description as string) ?? '',
+      title: typeof data.title === 'string' ? data.title : slug,
+      date: dateStr,
+      description: typeof data.description === 'string' ? data.description : '',
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
-      icon: typeof data.icon === 'string' ? data.icon : '',
       slug,
+      language,
+      readTimeMinutes,
     },
     content: body,
   }

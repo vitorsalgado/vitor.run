@@ -19,7 +19,6 @@ export const SITE = {
   sameAs: [
     'https://github.com/vitorsalgado',
     'https://linkedin.com/in/vitorsalgado',
-    'https://instagram.com/vtrsalgado',
     'https://unsplash.com/@vitorsalgado',
   ] as string[],
 } as const

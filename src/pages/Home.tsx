@@ -5,7 +5,7 @@ import avatar from '../assets/avatar.jpeg'
 export function Home() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16 sm:py-24 text-center">
-      <PageMeta title="Home" description="Personal site and blog." canonicalPath="/" />
+      <PageMeta title="Home" description="Personal site and blog." keywords={[]} canonicalPath="/" />
       <div className="flex justify-center mb-8">
         <img
           src={avatar}
@@ -32,7 +32,7 @@ export function Home() {
         Vitor Hugo Salgado
       </h1>
       <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-md mx-auto">
-        Software Engineer — open-source enthusiast.
+        Software Engineer<br />From São Paulo, Brasil 🇧🇷, currently living in Berlin, Germany 🇩🇪
       </p>
       <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-8">
         We are what we do, especially what we do to change what we are.

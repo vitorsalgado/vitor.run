@@ -1,8 +1,7 @@
-import { Github, Instagram, Linkedin, Camera } from 'lucide-react'
+import { Github, Linkedin, Camera } from 'lucide-react'
 import { socialLinks } from '../lib/social'
 
 const iconMap = {
-  Instagram,
   LinkedIn: Linkedin,
   GitHub: Github,
   Unsplash: Camera,

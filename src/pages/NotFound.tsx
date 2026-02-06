@@ -4,7 +4,7 @@ import { PageMeta } from '../components/PageMeta'
 export function NotFound() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-24 sm:py-32 text-center">
-      <PageMeta title="Page not found" description="The page you're looking for doesn't exist." />
+      <PageMeta title="Page not found" description="The page you're looking for doesn't exist." keywords={[]} canonicalPath="/404" />
       <p className="text-8xl sm:text-9xl font-light text-neutral-200 dark:text-neutral-700 tracking-tighter mb-4" aria-hidden>
         404
       </p>

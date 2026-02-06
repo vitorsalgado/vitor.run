@@ -7,10 +7,11 @@
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --color-ink: #1a1a1a;
   --color-ink-muted: #6b7280;
-  --color-link: var(--color-accent);
+  /* Default link color: neutral (not accent). Override with .link-accent or text-* utilities. */
+  --color-link: #1a1a1a;
   --color-link-hover: #e04848;
 
-  /* Site accent (Lucide-style violet from “Beautiful &” hero on lucide.dev) */
+  /* Site accent — use for hover, active states, and where links should stand out (e.g. .link-accent, .prose a) */
   --color-accent: #F56565;
 
   /* Navbar link styles — change these to customize */
@@ -34,6 +35,8 @@
   --nav-link-color: #a3a3a3;
   --nav-link-active-color: #fafafa;
   --nav-link-hover-bg: #404040;
+  --color-link: #e5e5e5;
+  --color-link-hover: #fca5a5;
   /* Accent unchanged in dark mode for underline */
 }
 
@@ -48,12 +51,22 @@ body {
   min-height: 100vh;
 }
 
+/* Default links: neutral color so Tailwind text-* and custom overrides work easily */
 a {
   color: var(--color-link);
   text-decoration: none;
 }
 
 a:hover {
+  color: var(--color-link-hover);
+}
+
+/* Optional: use .link-accent where you want accent-colored links */
+a.link-accent {
+  color: var(--color-accent);
+}
+
+a.link-accent:hover {
   color: var(--color-link-hover);
 }
 
@@ -96,6 +109,93 @@ a:hover {
   color: var(--color-accent);
 }
 
+/* Mobile menu dropdown - force dark text color */
+@media (max-width: 767px) {
+  header nav ul li a,
+  header nav ul li Link {
+    color: rgb(17, 24, 39) !important;
+  }
+
+  .dark header nav ul li a,
+  .dark header nav ul li Link {
+    color: rgb(243, 244, 246) !important;
+  }
+
+  /* Force accent color underline for active menu items */
+  header nav ul li a[style*="textDecoration"],
+  header nav ul li Link[style*="textDecoration"] {
+    text-decoration-color: var(--color-accent) !important;
+  }
+}
+
+/* Prevent navbar from changing style when buttons are clicked */
+/* Lock navbar header background - prevent any state changes */
+/* Use maximum specificity to override everything - only target sticky navbar header */
+header.sticky,
+header.sticky.bg-white\/80,
+header.sticky[class*="bg-white"],
+header.sticky[class*="bg-neutral"],
+header.sticky:active,
+header.sticky:focus,
+header.sticky:focus-within,
+header.sticky:focus-visible,
+header.sticky:hover,
+header.sticky:target,
+header.sticky[style*="background"],
+header.sticky nav,
+header.sticky nav:active,
+header.sticky nav:focus,
+header.sticky nav:focus-within,
+header.sticky nav:focus-visible,
+header.sticky nav:hover,
+header.sticky nav:target {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.dark header.sticky,
+.dark header.sticky.bg-white\/80,
+.dark header.sticky[class*="bg-white"],
+.dark header.sticky[class*="bg-neutral"],
+.dark header.sticky:active,
+.dark header.sticky:focus,
+.dark header.sticky:focus-within,
+.dark header.sticky:focus-visible,
+.dark header.sticky:hover,
+.dark header.sticky:target,
+.dark header.sticky[style*="background"],
+.dark header.sticky nav,
+.dark header.sticky nav:active,
+.dark header.sticky nav:focus,
+.dark header.sticky nav:focus-within,
+.dark header.sticky nav:focus-visible,
+.dark header.sticky nav:hover,
+.dark header.sticky nav:target {
+  background-color: rgba(23, 23, 23, 0.95) !important;
+  background: rgba(23, 23, 23, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Prevent button from affecting parent - isolate completely - only navbar header */
+header.sticky button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+header.sticky button:active,
+header.sticky button:focus {
+  outline: none;
+}
+
+header.sticky button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  outline-style: solid;
+}
+
 /* Prose for blog posts */
 .prose {
   max-width: 65ch;
@@ -104,30 +204,35 @@ a:hover {
 .prose h1 {
   font-size: 2rem;
   font-weight: 700;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
   line-height: 1.25;
+}
+
+/* First heading in prose (e.g. About page) – no extra top gap so page matches others */
+.prose > h1:first-child {
+  margin-top: 0;
 }
 
 .prose h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .prose h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .prose h4 {
   font-size: 1.125rem;
   font-weight: 600;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .prose p {
@@ -240,4 +345,19 @@ a:hover {
   max-width: 100%;
   height: auto;
   border-radius: 0.5rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
 }
