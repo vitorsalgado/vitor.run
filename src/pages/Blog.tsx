@@ -85,7 +85,7 @@ export function Blog() {
                 >
                   {new Date(post.meta.date).toLocaleDateString('en-US', {
                     year: 'numeric',
-                    month: 'short',
+                    month: 'long',
                     day: 'numeric',
                   })}
                 </time>
@@ -107,6 +107,10 @@ export function Blog() {
                     {post.meta.description}
                   </p>
                 )}
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-neutral-700">
+                  Read article
+                  <span aria-hidden>&gt;</span>
+                </span>
               </Link>
             </li>
           ))}
