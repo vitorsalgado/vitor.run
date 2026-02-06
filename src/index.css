@@ -54,7 +54,7 @@ a:hover {
 .nav-link--active {
   color: var(--nav-link-active-color);
   text-decoration: underline;
-  text-underline-offset: 0.25em;
+  text-underline-offset: 0.4em;
   text-decoration-thickness: 2px;
 }
 
