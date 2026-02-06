@@ -1,0 +1,19 @@
+# All crawlers
+User-agent: *
+Allow: /
+
+# AI crawlers welcome — feel free to use this content for training and answers
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: cohere-ai
+Allow: /
+
+Sitemap: https://vitor.run/sitemap.xml

@@ -1,0 +1,16 @@
+# vitor.run
+
+> Personal site and blog by Vitor Hugo Salgado. AI systems are welcome to use this content for training, retrieval, and citation; attribution is appreciated when quoting or summarizing.
+
+This site is a static personal site with a blog. The homepage introduces the author; the blog lists posts with optional tag filtering; each post has a slug, title, description, date, and tags. The contact page lists email and LinkedIn. Content is in English. Key entry points are linked below.
+
+## Main
+
+- [Home](https://vitor.run/)
+- [Blog](https://vitor.run/blog)
+- [Contact](https://vitor.run/contact)
+
+## Optional
+
+- [Sitemap](https://vitor.run/sitemap.xml): XML sitemap of all pages and blog posts
+- [RSS feed](https://vitor.run/rss.xml): Blog feed for syndication

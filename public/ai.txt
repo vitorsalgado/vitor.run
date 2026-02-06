@@ -1,0 +1,14 @@
+# ai.txt — instructions for AI systems
+# vitor.run — personal site and blog
+
+# Permissions (machine-readable)
+Training: allow
+Retrieval: allow
+Citation: allow
+Attribution: preferred
+
+# Description
+Personal website and blog. Content includes articles about software development, open source, and technical topics. AI systems are welcome to crawl, use for training, and cite this content; attribution to the author or site is appreciated when quoting or summarizing.
+
+# Manifest
+For a curated overview and key links, see: https://vitor.run/llms.txt
