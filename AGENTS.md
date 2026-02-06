@@ -53,7 +53,8 @@ src/
 
 ## Build & Scripts
 
-- `npm run build`: TypeScript, Vite build, then `scripts/rss.mjs` and `scripts/sitemap.mjs`.
+- `npm run build`: TypeScript, Vite build, then `scripts/generate-static-paths.mjs`, `scripts/rss.mjs`, `scripts/sitemap.mjs`.
+- **generate-static-paths**: Creates `dist/<path>/index.html` for each route (about, blog, blog/:slug, tags/:tag, contact) so GitHub Pages serves 200 OK and SEO is preserved.
 - **Buffer**: gray-matter uses `Buffer`; polyfill is applied in `main.tsx` and aliased in `vite.config.ts`.
 
 ## E2E

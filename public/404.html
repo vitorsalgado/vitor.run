@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The page you're looking for doesn't exist." />
+    <title>Page not found | vitor.run</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+        line-height: 1.6;
+        color: #0a0a0a;
+        background-color: #fafafa;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #fafafa;
+          background-color: #171717;
+        }
+        .notfound-code { color: #404040; }
+        .notfound-desc { color: #a3a3a3; }
+        .notfound-link {
+          color: #a3a3a3;
+        }
+        .notfound-link:hover { color: #fafafa; }
+      }
+      .notfound {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 6rem 1.5rem;
+        text-align: center;
+      }
+      @media (min-width: 640px) {
+        .notfound { padding: 8rem 1.5rem; }
+      }
+      .notfound-code {
+        font-size: 6rem;
+        font-weight: 300;
+        letter-spacing: -0.05em;
+        color: #e5e5e5;
+        margin: 0 0 1rem;
+      }
+      @media (min-width: 640px) {
+        .notfound-code { font-size: 8rem; }
+      }
+      .notfound-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem;
+      }
+      .notfound-desc {
+        font-size: 0.875rem;
+        color: #737373;
+        margin: 0 0 2rem;
+      }
+      .notfound-link {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #525252;
+        text-decoration: none;
+        transition: color 0.15s;
+      }
+      .notfound-link:hover { color: #0a0a0a; }
+    </style>
+  </head>
+  <body>
+    <div class="notfound">
+      <p class="notfound-code" aria-hidden>404</p>
+      <h1 class="notfound-title">Page not found</h1>
+      <p class="notfound-desc">This page doesn't exist or has been moved.</p>
+      <a href="/" class="notfound-link">← Back to home</a>
+    </div>
+  </body>
+</html>
