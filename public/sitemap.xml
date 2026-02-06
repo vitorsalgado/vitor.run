@@ -21,8 +21,23 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vitor.run/blog/puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-5-tests</loc>
+    <loc>https://vitor.run/blog/puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-tests</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vitor.run/tags/java</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://vitor.run/tags/tech</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://vitor.run/tags/testing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>

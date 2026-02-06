@@ -23,7 +23,7 @@ export function getReadTimeMinutes(content: string): number {
     .replace(/^#+\s+/gm, '')
     .replace(/\*\*?|__?|~~|`/g, '')
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/[#*_~`\[\]()]/g, ' ')
+    .replace(/[#*_~`[\]()]/g, ' ')
   const wordCount = stripped.split(/\s+/).filter(Boolean).length
   const wordMinutes = wordCount / WPM
 

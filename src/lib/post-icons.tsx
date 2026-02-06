@@ -1,8 +1,9 @@
+import { createElement, type ComponentType } from 'react'
 import type { LucideProps } from 'lucide-react'
 import { Code2, FileText, Landmark, MapPin } from 'lucide-react'
 
 /** Map first tag (lowercase) to a Lucide icon. Only these tags get a custom icon; others use default. */
-const TAG_ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
+const TAG_ICON_MAP: Record<string, ComponentType<LucideProps>> = {
   travel: MapPin,
   politics: Landmark,
   tech: Code2,
@@ -15,8 +16,8 @@ export function PostIcon({
   size = 24,
   className,
   ...props
-}: { tag: string | undefined } & LucideProps) {
-  const normalizedTag = tag?.trim().toLowerCase()
+}: { tag: string } & LucideProps) {
+  const normalizedTag = tag?.trim().toLowerCase() ?? ''
   const Icon = (normalizedTag && TAG_ICON_MAP[normalizedTag]) || DEFAULT_ICON
-  return <Icon size={size} className={className} {...props} />
+  return createElement(Icon, { size, className, ...props })
 }

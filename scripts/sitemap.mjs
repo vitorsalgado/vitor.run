@@ -34,20 +34,19 @@ const staticUrls = [
 ]
 
 let postSlugs = []
+const allTags = new Set()
 try {
   const files = readdirSync(postsDir).filter((f) => f.endsWith('.md'))
-  postSlugs = files
-    .map((f) => {
-      const raw = readFileSync(join(postsDir, f), 'utf-8')
-      const { data } = matter(raw)
-      const slug = typeof data.slug === 'string' && data.slug.trim() ? data.slug.trim() : null
-      if (!slug) {
-        console.warn(`[sitemap] Skipping ${f}: missing frontmatter "slug"`)
-        return null
-      }
-      return slug
-    })
-    .filter(Boolean)
+  for (const f of files) {
+    const raw = readFileSync(join(postsDir, f), 'utf-8')
+    const { data } = matter(raw)
+    const slug = typeof data.slug === 'string' && data.slug.trim() ? data.slug.trim() : null
+    if (slug) postSlugs.push(slug)
+    const tags = Array.isArray(data.tags) ? data.tags : []
+    for (const t of tags) {
+      if (t && typeof t === 'string') allTags.add(String(t).toLowerCase())
+    }
+  }
 } catch (err) {
   console.warn('[sitemap] Could not read posts:', err.message)
 }
@@ -59,9 +58,17 @@ const postUrls = postSlugs.map((slug) => ({
   lastmod: null,
 }))
 
+const tagUrls = [...allTags].sort().map((tag) => ({
+  loc: `/tags/${encodeURIComponent(tag)}`,
+  changefreq: 'weekly',
+  priority: '0.6',
+  lastmod: null,
+}))
+
 const allUrls = [
   ...staticUrls.map((u) => ({ ...u, lastmod: null })),
   ...postUrls,
+  ...tagUrls,
 ]
 
 const urlEntries = allUrls

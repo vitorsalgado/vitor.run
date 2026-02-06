@@ -1,8 +1,8 @@
 ---
-title: Puma4j — An easy way to load file resources into JUnit 5 tests
-slug: puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-5-tests
+title: Puma4j — An easy way to load file resources into JUnit tests
+slug: puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-tests
 date: 2022-02-01
-description: Load and parse file resources into JUnit 5 tests with just a couple of annotations.
+description: Load and parse file resources into JUnit tests with just a couple of annotations.
 language: EN
 tags:
   - tech
@@ -10,17 +10,17 @@ tags:
   - testing
 ---
 
-Hello developers, in this post I want to present **Puma4j**, a new open source project I recently published that I hope will make your life writing **JUnit 5** tests a little bit easier.
+In this post I'll introduce **Puma4j**, a new open-source project I recently published that I hope will make writing **JUnit 5** tests a bit easier.
 
-> Check the project repository on [Github](https://github.com/vitorsalgado/puma4j).
+> Check the project repository on [GitHub](https://github.com/vitorsalgado/puma4j).
 
 ## The Project
 
-In testing *microservices*, we usually need to simulate the behavior of external integrations, mocking HTTP requests/responses and messages arriving in topics or queues. For this, we need to build a lot of payloads in our tests.
+In testing *microservices*, we often need to simulate the behavior of external integrations, mocking HTTP requests/responses and messages arriving in topics or queues. For this, we need to build a lot of payloads in our tests.
 
 Instead of creating test data in our code which sometimes leaves our tests a little "dirty," or creating the same boilerplate code all the time to read and parse resource files, why not leverage *JUnit 5* extensions to make a simple and standardized way to do this and also have some fun coding new stuff?
 
-That's why **Puma4j** was created. With **Puma4j**, you can load and convert resources with just a couple of annotations.
+That's why **Puma4j** was created: with it, you can load and convert resources with just a couple of annotations.
 
 Take a look at the usage example below:
 
@@ -60,9 +60,9 @@ class YourJUnit5Test {
 }
 ```
 
-Following the example above, to use *Puma4j* we need to annotate our test class with **@UsePuma4j** and then, all fields and method parameters that we want resources to be injected need to be annotated with **@Res(RESOURCE_NAME_AND_EXTENSION)**.
+Following the example above, to use *Puma4j* we need to annotate our test class with **@UsePuma4j** and then, all fields and method parameters into which you want resources injected need to be annotated with **@Res(RESOURCE_NAME_AND_EXTENSION)**.
 
-Puma4j will automatically load the resources and convert them based on field or parameter type. For example, you can load the raw file value using a `String` or `byte` array.
+Puma4j will automatically load the resources and convert them based on field or parameter type. For example, you can load the raw file content as a `String` or `byte[]`.
 
 ### Supported File Types
 
@@ -76,11 +76,11 @@ The content of other file types, like **.txt**, can be loaded into a **String** 
 
 ### Custom Converters
 
-We can use a custom converter for your resources. Implement the interface `Unmarshaller<O>` and provide the class reference to the annotation **@Use(YourCustomConverter.class)**. The annotation **@Use** can be applied to the class, field, and method parameters.
+You can use a custom converter for your resources. Implement the `Unmarshaller<O>` interface and provide the class reference to the annotation **@Use(YourCustomConverter.class)**. The annotation **@Use** can be applied to the class, field, and method parameters.
 
 ### Switching JSON Converters
 
-By default, Puma4j uses Jackson Object Mapper to convert JSON resources into Java objects. To switch to Gson, use the annotation **@UseGson**. The annotation can be applied to class, field, and method parameters. In addition, there is **@UseJackson** to force a specific resource to use Object Mapper.
+By default, Puma4j uses Jackson Object Mapper to convert JSON resources into Java objects. To switch to Gson, use the annotation **@UseGson**. The annotation can be applied to class, field, and method parameters. You can also use **@UseJackson** to force a specific resource to use Object Mapper.
 
 ---
 

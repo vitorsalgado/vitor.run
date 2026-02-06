@@ -6,14 +6,15 @@ description: Learn more about Vitor Hugo Salgado, a Software Engineer and open-s
 # About
 
 Hello, I'm Vitor, a Software Engineer at [Verve Group](https://verve.com/).  
-I'm originally from Sao Paulo, Brazil, and now living in Berlin, Germany. I'm an alumnus from [FATEC Praia Grande](https://fatecpg.cps.sp.gov.br/) where I graduated in Information Technology for Business Management. 
-I enjoy coding as a hobby and I like to create open-source stuff for fun.  
+I'm originally from São Paulo, Brazil, and now living in Berlin, Germany. I'm an alumnus of [FATEC Praia Grande](https://fatecpg.cps.sp.gov.br/) where I graduated in Information Technology for Business Management. 
+I code as a hobby and like to create open-source projects for fun.
 
-I love hiking, trekking, sports in general, and I've been trying to become a Marathon runner.
+I love hiking, trekking, sports in general, and I've been working toward running a marathon, with some ups and downs.
 
 I'm a native Brazilian Portuguese speaker, and I also speak English and Spanish.
 
-I've been working in the **Ad Tech** industry since 2022. These are the things that I've been activelly working with: 
+I've been working in the **Ad Tech** industry since 2022.  
+Here’s what I've been working with lately:
 
 - Go
 - Distributed Systems
@@ -22,7 +23,7 @@ I've been working in the **Ad Tech** industry since 2022. These are the things t
 - VictoriaMetrics
 - Grafana
 
-## Some Of My Work Out There
+## Some of my work out there
 
 - [NPM](https://www.npmjs.com/~vitor.salgado)
 - [VS Code Extensions](https://marketplace.visualstudio.com/search?term=publisher%3A%22Vitor%20Hugo%20Salgado%22&target=VSCode&category=All%20categories&sortBy=Relevance)
@@ -30,10 +31,10 @@ I've been working in the **Ad Tech** industry since 2022. These are the things t
 
 ## Books
 
-I activelly read both as a hobby and for professional development.  
-Some recommendations:  
+I read regularly, both for pleasure and for professional development.  
+A few tech books I recommend:
 
-- Building Microservices
-- Release It! Design and Deploy Production-Ready Software
-- Design Data-Intensive Applications
-- Staff Engineer: Leadership Beyond The Management Track
+- Building Microservices, _Sam Newman_
+- Release It! Design and Deploy Production-Ready Software, _Michael T. Nygard_
+- Designing Data-Intensive Applications, _Martin Kleppmann_
+- Staff Engineer: Leadership Beyond The Management Track, _Will Larson_
