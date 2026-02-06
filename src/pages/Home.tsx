@@ -1,11 +1,19 @@
 import { PageMeta } from '../components/PageMeta'
+import { Breadcrumbs } from '../components/Breadcrumbs'
 import { SocialLinks } from '../components/SocialLinks'
 import avatar from '../assets/avatar.jpeg'
 
 export function Home() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16 sm:py-24 text-center">
-      <PageMeta title="Home" description="Personal site and blog." keywords={[]} canonicalPath="/" />
+      <PageMeta
+        title="Home"
+        description="Personal site and blog."
+        keywords={[]}
+        canonicalPath="/"
+        breadcrumbList={[{ name: 'Home', path: '/' }]}
+      />
+      <Breadcrumbs items={[{ label: 'Home', isHome: true }]} className="mb-4 justify-center" />
       <div className="flex justify-center mb-8">
         <img
           src={avatar}

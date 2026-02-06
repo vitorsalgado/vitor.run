@@ -26,9 +26,12 @@ export type PageMetaProps = {
   modifiedTime?: string
   /** For article: section (e.g. "Blog"). */
   section?: string
+  /** Breadcrumb trail for BreadcrumbList JSON-LD and optional UI. Each item: { name, path }. */
+  breadcrumbList?: { name: string; path: string }[]
 }
 
 const JSON_LD_SCRIPT_ID = 'page-jsonld'
+const BREADCRUMB_JSON_LD_SCRIPT_ID = 'page-breadcrumb-jsonld'
 
 function toAbsoluteUrl(pathOrUrl: string, origin: string): string {
   if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
@@ -93,6 +96,23 @@ function buildJsonLd(
   return JSON.stringify(webSite)
 }
 
+function buildBreadcrumbListJsonLd(
+  origin: string,
+  items: { name: string; path: string }[]
+): string {
+  const itemListElement = items.map((item, index) => ({
+    '@type': 'ListItem' as const,
+    position: index + 1,
+    name: item.name,
+    item: toAbsoluteUrl(item.path.startsWith('/') ? item.path : `/${item.path}`, origin),
+  }))
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement,
+  })
+}
+
 /**
  * Sets document title and comprehensive meta tags for SEO and social sharing:
  * - Standard: title, description, keywords, canonical
@@ -112,6 +132,7 @@ export function PageMeta({
   publishedTime,
   modifiedTime,
   section = 'blog',
+  breadcrumbList,
 }: PageMetaProps) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name
@@ -221,10 +242,28 @@ export function PageMeta({
     }
     scriptEl.textContent = jsonLd
 
+    // —— BreadcrumbList JSON-LD ——
+    let breadcrumbScriptEl = document.getElementById(BREADCRUMB_JSON_LD_SCRIPT_ID) as HTMLScriptElement | null
+    if (breadcrumbList?.length && origin) {
+      const breadcrumbJsonLd = buildBreadcrumbListJsonLd(origin, breadcrumbList)
+      if (!breadcrumbScriptEl) {
+        breadcrumbScriptEl = document.createElement('script')
+        breadcrumbScriptEl.id = BREADCRUMB_JSON_LD_SCRIPT_ID
+        breadcrumbScriptEl.type = 'application/ld+json'
+        document.head.appendChild(breadcrumbScriptEl)
+      }
+      breadcrumbScriptEl.textContent = breadcrumbJsonLd
+    } else if (breadcrumbScriptEl) {
+      breadcrumbScriptEl.remove()
+      breadcrumbScriptEl = null
+    }
+
     return () => {
       document.title = SITE.name
       const script = document.getElementById(JSON_LD_SCRIPT_ID)
       if (script) script.remove()
+      const bcScript = document.getElementById(BREADCRUMB_JSON_LD_SCRIPT_ID)
+      if (bcScript) bcScript.remove()
     }
   }, [
     title,
@@ -238,6 +277,7 @@ export function PageMeta({
     publishedTime,
     modifiedTime,
     section,
+    breadcrumbList,
   ])
 
   return null

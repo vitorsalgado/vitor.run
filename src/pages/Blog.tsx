@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { PageMeta } from '../components/PageMeta'
+import { Breadcrumbs } from '../components/Breadcrumbs'
 import { ReadTime } from '../components/ReadTime'
 import { Tags } from '../components/Tags'
 import { PostIcon } from '../lib/post-icons'
@@ -28,9 +29,38 @@ export function Blog() {
 
   const pageTitle = tagParam ? tagParam.charAt(0).toUpperCase() + tagParam.slice(1) : 'Blog'
 
+  const blogBreadcrumbList = tagParam
+    ? [
+        { name: 'Home', path: '/' },
+        { name: 'Blog', path: '/blog' },
+        { name: pageTitle, path: `/tags/${encodeURIComponent(tagParam.toLowerCase())}` },
+      ]
+    : [
+        { name: 'Home', path: '/' },
+        { name: 'Blog', path: '/blog' },
+      ]
+
+  const blogBreadcrumbItems = tagParam
+    ? [
+        { label: 'Home', href: '/', isHome: true },
+        { label: 'Blog', href: '/blog' },
+        { label: pageTitle },
+      ]
+    : [
+        { label: 'Home', href: '/', isHome: true },
+        { label: pageTitle },
+      ]
+
   if (error) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16">
+        <PageMeta
+          title={pageTitle}
+          description=""
+          keywords={[]}
+          breadcrumbList={blogBreadcrumbList}
+        />
+        <Breadcrumbs items={blogBreadcrumbItems} className="mb-4" />
         <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-8">{pageTitle}</h1>
         <p className="text-red-600 dark:text-red-400">Failed to load posts.</p>
       </div>
@@ -40,6 +70,13 @@ export function Blog() {
   if (loading) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16">
+        <PageMeta
+          title={pageTitle}
+          description=""
+          keywords={[]}
+          breadcrumbList={blogBreadcrumbList}
+        />
+        <Breadcrumbs items={blogBreadcrumbItems} className="mb-4" />
         <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-8">{pageTitle}</h1>
         <p className="text-neutral-500 dark:text-neutral-400">Loading…</p>
       </div>
@@ -55,7 +92,9 @@ export function Blog() {
         canonicalPath={
           tagParam ? `/tags/${encodeURIComponent(tagParam.toLowerCase())}` : '/blog'
         }
+        breadcrumbList={blogBreadcrumbList}
       />
+      <Breadcrumbs items={blogBreadcrumbItems} className="mb-4" />
       <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">{pageTitle}</h1>
       {filteredPosts.length === 0 ? (
         <div className="pl-8">

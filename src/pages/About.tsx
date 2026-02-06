@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { PageMeta } from '../components/PageMeta'
+import { Breadcrumbs } from '../components/Breadcrumbs'
 import { SITE } from '../lib/site'
 import { getAbout } from '../lib/about'
 
@@ -63,6 +64,11 @@ export function About() {
     SITE.author.toLowerCase(),
   ]
 
+  const aboutBreadcrumbList = [
+    { name: 'Home', path: '/' },
+    { name: about.title, path: '/about' },
+  ]
+
   return (
     <article className="max-w-2xl mx-auto px-6 py-16">
       <PageMeta
@@ -71,6 +77,14 @@ export function About() {
         canonicalPath="/about"
         keywords={keywords}
         type="website"
+        breadcrumbList={aboutBreadcrumbList}
+      />
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/', isHome: true },
+          { label: about.title },
+        ]}
+        className="mb-4"
       />
       <div className="prose prose-slate">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>

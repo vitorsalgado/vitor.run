@@ -1,5 +1,6 @@
 import { Linkedin, Mail } from 'lucide-react'
 import { PageMeta } from '../components/PageMeta'
+import { Breadcrumbs } from '../components/Breadcrumbs'
 import { SITE, contactLinks } from '../lib/site'
 
 const contactIconMap = {
@@ -7,10 +8,28 @@ const contactIconMap = {
   Linkedin,
 } as const
 
+const contactBreadcrumbList = [
+  { name: 'Home', path: '/' },
+  { name: 'Contact', path: '/contact' },
+]
+
 export function Contact() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16">
-      <PageMeta title="Contact" description="Get in touch." canonicalPath="/contact" keywords={[]} />
+      <PageMeta
+        title="Contact"
+        description="Get in touch."
+        canonicalPath="/contact"
+        keywords={[]}
+        breadcrumbList={contactBreadcrumbList}
+      />
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/', isHome: true },
+          { label: 'Contact' },
+        ]}
+        className="mb-4"
+      />
       <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-8">Contact</h1>
       <p className="text-slate-600 dark:text-slate-300 mb-8">
         You can reach me through the channels below. I’m happy to chat about

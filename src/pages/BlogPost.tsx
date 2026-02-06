@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { PageMeta } from '../components/PageMeta'
+import { Breadcrumbs } from '../components/Breadcrumbs'
 import { ReadTime } from '../components/ReadTime'
 import { NotFound } from './NotFound'
 import type { Post } from '../lib/posts'
@@ -147,6 +148,12 @@ export function BlogPost() {
   const postDate = post.meta.date ? new Date(post.meta.date) : null
   const isValidDate = postDate !== null && !isNaN(postDate.getTime())
 
+  const postBreadcrumbList = [
+    { name: 'Home', path: '/' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'Post', path: `/blog/${post.slug}` },
+  ]
+
   return (
     <article className="max-w-2xl mx-auto px-6 py-16">
       <PageMeta
@@ -157,6 +164,15 @@ export function BlogPost() {
         type="article"
         publishedTime={post.meta.date ? new Date(post.meta.date).toISOString() : undefined}
         section="Blog"
+        breadcrumbList={postBreadcrumbList}
+      />
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/', isHome: true },
+          { label: 'Blog', href: '/blog', ariaLabel: `Blog: ${post.meta.title}` },
+          { label: 'Post', ariaLabel: post.meta.title },
+        ]}
+        className="mb-4"
       />
       <header className="mb-8 bg-transparent">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
