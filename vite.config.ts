@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { copyFileSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -40,10 +40,24 @@ function spaFallback() {
   }
 }
 
+/**
+ * GitHub Pages 404 workaround: copy index.html to 404.html so that direct
+ * requests to /blog, /blog/slug, etc. serve the SPA and React Router can handle the route.
+ */
+function githubPages404() {
+  return {
+    name: 'github-pages-404',
+    closeBundle() {
+      const outDir = join(process.cwd(), 'dist')
+      copyFileSync(join(outDir, 'index.html'), join(outDir, '404.html'))
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   base: '/', // Served at root for vitor.run
-  plugins: [react(), tailwindcss(), spaFallback()],
+  plugins: [react(), tailwindcss(), spaFallback(), githubPages404()],
   resolve: {
     alias: {
       buffer: 'buffer',
