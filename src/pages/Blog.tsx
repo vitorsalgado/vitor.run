@@ -130,6 +130,14 @@ export function Blog() {
                     {post.meta.title}
                   </Link>
                   <div className="mb-2 flex items-center gap-2 flex-wrap">
+                    <span className="flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 p-1 shrink-0">
+                      <PostIcon
+                        tag={post.meta.tags?.[0]}
+                        size={20}
+                        className="text-[var(--color-accent)]"
+                      />
+                    </span>
+                    <span className="text-slate-400 dark:text-slate-500" aria-hidden>·</span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700">
                       {post.meta.language}
                     </span>
@@ -152,14 +160,6 @@ export function Blog() {
                         ))}
                       </>
                     )}
-                    <span className="text-slate-400 dark:text-slate-500" aria-hidden>·</span>
-                    <span className="flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 p-1 shrink-0">
-                      <PostIcon
-                        tag={post.meta.tags?.[0]}
-                        size={20}
-                        className="text-[var(--color-accent)]"
-                      />
-                    </span>
                   </div>
                   {post.meta.description && (
                     <p className="text-neutral-600 dark:text-neutral-300 mb-2 text-sm">
