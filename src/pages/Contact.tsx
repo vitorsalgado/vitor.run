@@ -3,7 +3,7 @@ import { PageMeta } from '../components/PageMeta'
 export function Contact() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16">
-      <PageMeta title="Contact" description="Get in touch." />
+      <PageMeta title="Contact" description="Get in touch." canonicalPath="/contact" />
       <h1 className="text-3xl font-bold text-slate-900 mb-8">Contact</h1>
       <p className="text-slate-600 mb-8">
         You can reach me through the channels below. I’m happy to chat about

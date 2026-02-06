@@ -49,6 +49,9 @@ export function BlogPost() {
         description={post.meta.description}
         canonicalPath={`/blog/${post.slug}`}
         keywords={post.meta.tags}
+        type="article"
+        publishedTime={post.meta.date ? new Date(post.meta.date).toISOString() : undefined}
+        section="Blog"
       />
       <Link
         to="/blog"

@@ -5,7 +5,7 @@ import avatar from '../assets/avatar.jpeg'
 export function Home() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16 sm:py-24 text-center">
-      <PageMeta title="Home" description="Personal site and blog." />
+      <PageMeta title="Home" description="Personal site and blog." canonicalPath="/" />
       <div className="flex justify-center mb-8">
         <img
           src={avatar}
