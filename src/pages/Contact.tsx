@@ -40,8 +40,9 @@ export function Contact() {
           <a
             href={`mailto:${SITE.email}`}
             className="flex items-center gap-3 text-slate-900 dark:text-slate-100 font-medium"
+            aria-label={`Email: ${SITE.email}`}
           >
-            <Mail size={20} strokeWidth={1.5} className="shrink-0 text-[var(--color-accent)]" aria-hidden />
+            <Mail size={20} strokeWidth={1.5} className="shrink-0 text-[var(--color-accent-link)]" aria-hidden />
             {SITE.email}
           </a>
         </li>
@@ -54,8 +55,9 @@ export function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-slate-900 dark:text-slate-100 font-medium"
+                aria-label={`${label} (opens in new tab)`}
               >
-                {Icon ? <Icon size={20} strokeWidth={1.5} className="shrink-0 text-[var(--color-accent)]" aria-hidden /> : null}
+                {Icon ? <Icon size={20} strokeWidth={1.5} className="shrink-0 text-[var(--color-accent-link)]" aria-hidden /> : null}
                 {label}
               </a>
             </li>

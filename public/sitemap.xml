@@ -21,16 +21,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vitor.run/blog/hello-world</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://vitor.run/blog/new-post</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://vitor.run/blog/puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-5-tests</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

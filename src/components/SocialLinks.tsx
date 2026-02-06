@@ -29,7 +29,7 @@ export function SocialLinks({ className = '', variant = 'default' }: SocialLinks
                 target="_blank"
                 rel="noopener noreferrer"
                 className={isCompact ? 'nav-link p-2 rounded-md block' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-100 transition-colors'}
-                aria-label={label}
+                aria-label={`${label} (opens in new tab)`}
               >
                 <Icon size={isCompact ? 20 : 24} strokeWidth={1.5} aria-hidden />
               </a>

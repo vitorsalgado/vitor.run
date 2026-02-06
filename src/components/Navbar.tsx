@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Mail, Menu, Rss, TentTree, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { SocialLinks } from './SocialLinks'
@@ -14,6 +14,7 @@ export function Navbar() {
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const firstMenuLinkRef = useRef<HTMLAnchorElement>(null)
 
   // Reset menu state when location changes
   useEffect(() => {
@@ -21,6 +22,17 @@ export function Navbar() {
       setMenuOpen(false)
     })
   }, [location.pathname])
+
+  // Focus first link when mobile menu opens; close on Escape
+  useEffect(() => {
+    if (!menuOpen) return
+    firstMenuLinkRef.current?.focus()
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [menuOpen])
 
   // Check dark mode
   useEffect(() => {
@@ -42,7 +54,7 @@ export function Navbar() {
 
   return (
     <header className="border-b border-neutral-200/80 bg-white/80 backdrop-blur-sm sticky top-0 z-10 dark:border-neutral-700/80 dark:bg-neutral-900/80 select-none" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-      <nav className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <nav className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between gap-4" aria-label="Main">
         {/* Brand icon - visible on home page and desktop, name on mobile for other pages */}
         {location.pathname === '/' ? (
           <Link
@@ -103,7 +115,7 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             className="nav-link p-2 rounded-md"
-            aria-label="RSS feed"
+            aria-label="RSS feed (opens in new tab)"
           >
             <Rss size={20} strokeWidth={1.5} aria-hidden />
           </a>
@@ -149,12 +161,13 @@ export function Navbar() {
           />
           {/* Menu panel - positioned below header */}
           <div className="absolute top-[73px] left-0 right-0 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700 shadow-lg max-h-[calc(100vh-73px)] overflow-y-auto">
-            <nav className="w-full">
+            <nav className="w-full" aria-label="Mobile menu">
               <div className="max-w-3xl mx-auto px-6 py-4">
                 <ul className="space-y-1">
-                  {navLinks.map(({ to, label }) => (
+                  {navLinks.map(({ to, label }, index) => (
                     <li key={to}>
                       <Link
+                        ref={index === 0 ? firstMenuLinkRef : undefined}
                         to={to}
                         onClick={() => setMenuOpen(false)}
                         className={`block px-4 py-3 text-base font-medium rounded-md transition-colors ${
@@ -206,6 +219,7 @@ export function Navbar() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-3 text-base font-medium rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                       style={{ color: isDark ? 'rgb(243, 244, 246)' : 'rgb(17, 24, 39)' }}
+                      aria-label="RSS feed (opens in new tab)"
                     >
                       RSS Feed
                     </a>

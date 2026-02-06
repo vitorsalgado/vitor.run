@@ -51,13 +51,13 @@ function CodeBlock({
         type="button"
         onClick={handleCopy}
         className="absolute top-2 right-2 p-1.5 rounded-md bg-neutral-800 dark:bg-neutral-700 text-neutral-300 dark:text-neutral-400 hover:text-white dark:hover:text-neutral-100 hover:bg-neutral-700 dark:hover:bg-neutral-600 transition-colors opacity-100 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer"
-        aria-label="Copy code"
-        title="Copy code"
+        aria-label={copiedCodeId === codeId ? 'Code copied' : 'Copy code'}
+        title={copiedCodeId === codeId ? 'Code copied' : 'Copy code'}
       >
         {copiedCodeId === codeId ? (
-          <span className="text-xs">Copied!</span>
+          <span className="text-xs" aria-hidden>Copied!</span>
         ) : (
-          <Copy size={16} strokeWidth={1.5} />
+          <Copy size={16} strokeWidth={1.5} aria-hidden />
         )}
       </button>
     </div>
@@ -223,26 +223,33 @@ export function BlogPost() {
                 onClick={() => setShareMenuOpen(!shareMenuOpen)}
                 className="p-1.5 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
                 aria-label="Share post"
+                aria-haspopup="menu"
                 aria-expanded={shareMenuOpen}
               >
-                <Share2 size={18} strokeWidth={1.5} />
+                <Share2 size={18} strokeWidth={1.5} aria-hidden />
               </button>
               {shareMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md shadow-lg py-1 min-w-[140px] z-10">
+                <div
+                  role="menu"
+                  className="absolute right-0 top-full mt-1 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md shadow-lg py-1 min-w-[140px] z-10"
+                  aria-label="Share options"
+                >
                   <button
                     type="button"
+                    role="menuitem"
                     onClick={shareOnLinkedIn}
                     className="w-full px-4 py-2 text-left text-sm text-slate-700 dark:text-slate-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 flex items-center gap-2 transition-colors"
                   >
-                    <Linkedin size={16} strokeWidth={1.5} />
+                    <Linkedin size={16} strokeWidth={1.5} aria-hidden />
                     LinkedIn
                   </button>
                   <button
                     type="button"
+                    role="menuitem"
                     onClick={shareOnX}
                     className="w-full px-4 py-2 text-left text-sm text-slate-700 dark:text-slate-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 flex items-center gap-2 transition-colors"
                   >
-                    <Twitter size={16} strokeWidth={1.5} />
+                    <Twitter size={16} strokeWidth={1.5} aria-hidden />
                     X
                   </button>
                 </div>
@@ -255,12 +262,12 @@ export function BlogPost() {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            h1: 'h2',
-            h2: 'h3',
-            h3: 'h4',
-            h4: 'h5',
-            h5: 'h6',
-            h6: 'p',
+            h1: 'h1',
+            h2: 'h2',
+            h3: 'h3',
+            h4: 'h4',
+            h5: 'h5',
+            h6: 'h6',
             pre: ({ children, ...props }: React.ComponentProps<'pre'>) => {
               const codeId = `code-${Math.random().toString(36).substring(2, 9)}`
               const handleCopy = () => {
@@ -313,14 +320,24 @@ export function BlogPost() {
         </footer>
       )}
       {copyNotificationVisible && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up">
+        <div
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <div className="bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-4 py-2 rounded-md shadow-lg text-sm font-medium">
             Link copied to clipboard
           </div>
         </div>
       )}
       {codeCopyNotificationVisible && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up">
+        <div
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <div className="bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-4 py-2 rounded-md shadow-lg text-sm font-medium">
             Code copied!
           </div>

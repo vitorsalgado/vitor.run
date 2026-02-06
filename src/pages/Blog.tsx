@@ -134,7 +134,7 @@ export function Blog() {
                       <PostIcon
                         tag={post.meta.tags?.[0]}
                         size={20}
-                        className="text-[var(--color-accent)]"
+                        className="text-[var(--color-accent-link)]"
                       />
                     </span>
                     <span className="text-slate-400 dark:text-slate-500" aria-hidden>·</span>
