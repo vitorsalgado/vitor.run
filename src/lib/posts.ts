@@ -3,11 +3,9 @@ import matter from 'gray-matter'
 export interface PostMeta {
   title: string
   date: string
-  description?: string
-  tags?: string[]
-  /** Lucide icon name (e.g. FileText, BookOpen, Coffee). */
-  icon?: string
-  /** URL slug for the post (from frontmatter). Required. Used in /blog/:slug. */
+  description: string
+  tags: string[]
+  icon: string
   slug: string
 }
 
@@ -40,9 +38,9 @@ function parsePost(path: string, raw: string): Post {
     meta: {
       title: (data.title as string) ?? slug,
       date: (data.date as string) ?? '',
-      description: data.description as string | undefined,
-      tags: Array.isArray(data.tags) ? (data.tags as string[]) : undefined,
-      icon: typeof data.icon === 'string' ? data.icon : undefined,
+      description: (data.description as string) ?? '',
+      tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
+      icon: typeof data.icon === 'string' ? data.icon : '',
       slug,
     },
     content: body,

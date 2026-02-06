@@ -11,7 +11,7 @@ export type PageMetaProps = {
   /** Canonical path (e.g. /blog/my-post). Absolute URL is built from origin. */
   canonicalPath?: string
   /** Keywords for meta keywords and, when type is article, og:tag / article:tag. */
-  keywords?: string[] | string
+  keywords: string[]
   /** Page type: website (default) or article (blog post). */
   type?: PageType
   /** Image path or absolute URL for og:image. Overrides site default. */
@@ -50,7 +50,7 @@ function buildJsonLd(
     imageUrl: string
     publishedTime?: string
     modifiedTime?: string
-    keywordsArr: string[]
+    keywords: string[]
   }
 ): string {
   const personUrl = origin.replace(/\/$/, '')
@@ -77,7 +77,7 @@ function buildJsonLd(
       url: opts.canonicalUrl,
     }
     if (opts.imageUrl) article.image = opts.imageUrl
-    if (opts.keywordsArr.length) article.keywords = opts.keywordsArr.join(', ')
+    if (opts.keywords?.length) article.keywords = opts.keywords.join(', ')
     return JSON.stringify(article)
   }
 
@@ -111,7 +111,7 @@ export function PageMeta({
   author = SITE.author,
   publishedTime,
   modifiedTime,
-  section = 'Blog',
+  section = 'blog',
 }: PageMetaProps) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name
@@ -122,8 +122,7 @@ export function PageMeta({
 
     document.title = fullTitle
 
-    const keywordsArr = Array.isArray(keywords) ? keywords : keywords ? [keywords] : []
-    const keywordsStr = keywordsArr.join(', ')
+    const keywordsStr = keywords?.join(', ')
 
     const imageUrl =
       (image && toAbsoluteUrl(image, origin)) ||
@@ -179,13 +178,6 @@ export function PageMeta({
     } else {
       removeMeta('og:image', 'property')
     }
-    if (type === 'article') {
-      if (author) setMeta('og:article:author', author, 'property')
-      if (publishedTime) setMeta('og:article:published_time', publishedTime, 'property')
-      if (modifiedTime) setMeta('og:article:modified_time', modifiedTime, 'property')
-      if (section) setMeta('og:article:section', section, 'property')
-      keywordsArr.forEach((tag) => setMeta('og:article:tag', tag, 'property'))
-    }
 
     // —— Dublin Core ——
     setMeta('DC.title', fullTitle)
@@ -205,7 +197,7 @@ export function PageMeta({
       if (modifiedTime) setMeta('article:modified_time', modifiedTime, 'property')
       if (author) setMeta('article:author', author, 'property')
       if (section) setMeta('article:section', section, 'property')
-      keywordsArr.forEach((tag) => setMeta('article:tag', tag, 'property'))
+      keywords?.forEach((tag) => setMeta('article:tag', tag, 'property'))
     }
 
     // —— JSON-LD (application/ld+json) ——
@@ -218,7 +210,7 @@ export function PageMeta({
       imageUrl,
       publishedTime,
       modifiedTime,
-      keywordsArr,
+      keywords,
     })
     let scriptEl = document.getElementById(JSON_LD_SCRIPT_ID) as HTMLScriptElement | null
     if (!scriptEl) {
