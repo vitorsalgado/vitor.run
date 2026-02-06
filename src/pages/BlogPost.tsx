@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { PageMeta } from '../components/PageMeta'
+import { NotFound } from './NotFound'
 import type { Post } from '../lib/posts'
 import { getPost } from '../lib/posts'
 
@@ -38,14 +39,7 @@ export function BlogPost() {
   }
 
   if (notFound || !post) {
-    return (
-      <div className="max-w-2xl mx-auto px-6 py-16">
-        <p className="text-slate-500 mb-4">Post not found.</p>
-        <Link to="/blog" className="text-slate-900 font-medium ">
-          ← Back to Blog
-        </Link>
-      </div>
-    )
+    return <NotFound />
   }
 
   return (

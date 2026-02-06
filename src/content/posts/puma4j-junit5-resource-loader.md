@@ -85,4 +85,4 @@ By default, Puma4j uses Jackson Object Mapper to convert JSON resources into Jav
 
 ---
 
-Take a look at the project documentation and source code on [GitHub](https://github.com/vitorsalgado/puma4j).
+> Take a look at the project documentation and source code on [GitHub](https://github.com/vitorsalgado/puma4j).
