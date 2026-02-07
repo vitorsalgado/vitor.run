@@ -31,7 +31,7 @@ src/
 
 ## Site Config
 
-- `src/lib/site.ts`: Site name, author, email, avatar, social links. Used by PageMeta, Contact, etc.
+- `src/lib/site.ts`: Site name, author, email, avatar, social links, `disqusShortname`. Used by PageMeta, Contact, DisqusComments, etc.
 - `src/lib/social.ts`: Social links config for SocialLinks component.
 
 ## Styling & Theming
@@ -40,6 +40,10 @@ src/
 - **Dark mode**: Class-based (add `.dark` to `<html>`). ThemeToggle persists to localStorage.
 - **Navbar**: Styles use `--nav-link-color`, `--nav-link-active-color`, `--nav-link-hover-bg`, `--nav-link-active-underline`.
 - **Accent**: `--color-accent`, `--color-accent-link` for links and focus states.
+
+## Disqus
+
+- **DisqusComments** (`src/components/DisqusComments.tsx`): Renders Disqus thread on blog posts. Uses `SITE.disqusShortname` from `site.ts`. Set to empty string to disable. Uses `disqus-react` package.
 
 ## Post Icons
 

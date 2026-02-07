@@ -9,6 +9,7 @@ export function ThemeToggle() {
     document.documentElement.classList.toggle('dark', next)
     localStorage.setItem('theme', next ? 'dark' : 'light')
     setDark(next)
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { dark: next } }))
   }
 
   return (

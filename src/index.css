@@ -23,7 +23,23 @@
   --nav-link-active-underline: 2px solid var(--color-accent);
 }
 
+/* Disqus Fixes */
+#disqus_thread{
+  /* force light mode */
+  color-scheme: none !important;
+ filter: none;
+ background-color: white;
+ padding: 1rem;
+ border-radius: 0.5rem;
+}
+
+/* If you switch your site to dark mode, keep forcing “light” inside the iframe */
+[data-theme="dark"] #disqus_thread{
+  background-color: black !important;
+}
+
 :root {
+  color-scheme: light;
   font-family: var(--font-sans);
   line-height: 1.6;
   font-weight: 400;
@@ -34,6 +50,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --nav-link-color: #a3a3a3;
   --nav-link-active-color: #fafafa;
   --nav-link-hover-bg: #404040;

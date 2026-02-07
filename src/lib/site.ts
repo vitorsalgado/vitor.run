@@ -14,6 +14,7 @@ export const SITE = {
   name: 'vitor.run',
   locale: 'en_US',
   author: 'Vitor Hugo Salgado',
+  disqusShortname: 'vitor-run',
   email: 'vsalgadopb@gmail.com',
   image: avatarUrl,
   sameAs: [

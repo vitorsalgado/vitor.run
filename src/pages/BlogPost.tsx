@@ -4,8 +4,9 @@ import { Link as LinkIcon, Share2, Linkedin, Twitter, Copy } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { PageMeta } from '../components/PageMeta'
 import { Breadcrumbs } from '../components/Breadcrumbs'
+import { DisqusComments } from '../components/DisqusComments'
+import { PageMeta } from '../components/PageMeta'
 import { ReadTime } from '../components/ReadTime'
 import { NotFound } from './NotFound'
 import type { Post } from '../lib/posts'
@@ -319,6 +320,12 @@ export function BlogPost() {
           </nav>
         </footer>
       )}
+      <DisqusComments
+        url={typeof window !== 'undefined' ? `${window.location.origin}/blog/${post.slug}` : ''}
+        identifier={post.slug}
+        title={post.meta.title}
+        language={post.meta.language}
+      />
       {copyNotificationVisible && (
         <div
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up"
