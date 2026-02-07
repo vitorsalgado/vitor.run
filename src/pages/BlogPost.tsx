@@ -327,7 +327,7 @@ export function BlogPost() {
           aria-atomic="true"
         >
           <div className="bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-4 py-2 rounded-md shadow-lg text-sm font-medium">
-            Link copied to clipboard
+            Link copied!
           </div>
         </div>
       )}
