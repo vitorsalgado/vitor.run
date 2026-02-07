@@ -23,6 +23,18 @@
   --nav-link-active-underline: 2px solid var(--color-accent);
 }
 
+.site-footer {
+  border-top: 1px solid rgb(229 231 235 / 0.8);
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--nav-link-color);
+}
+
+.dark .site-footer {
+  border-color: rgb(64 64 64 / 0.8);
+}
+
 /* Disqus Fixes */
 #disqus_thread{
   /* force light mode */
