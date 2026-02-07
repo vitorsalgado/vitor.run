@@ -18,6 +18,7 @@ export function Home() {
           width={160}
           height={160}
           className="w-40 h-40 rounded-full object-cover border-4 border-slate-200 dark:border-slate-600 shadow-lg bg-slate-100 dark:bg-slate-800"
+          fetchPriority="high"
           onError={(e) => {
             const target = e.currentTarget
             target.style.display = 'none'
