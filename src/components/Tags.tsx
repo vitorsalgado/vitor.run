@@ -1,12 +1,13 @@
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 
 type TagsProps = {
   tags: string[]
 }
 
 export function Tags({ tags }: TagsProps) {
+  const { tag: tagFromRoute } = useParams<{ tag?: string }>()
   const [searchParams] = useSearchParams()
-  const activeTag = searchParams.get('tag')
+  const activeTag = tagFromRoute ?? searchParams.get('tag') ?? null
 
   if (tags.length === 0) return null
 
