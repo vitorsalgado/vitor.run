@@ -19,10 +19,10 @@ export interface Post {
 }
 
 /**
- * All blog posts are loaded at build time from src/content/posts/*.md
+ * All blog posts are loaded at build time from blog/*.md (project root)
  * via Vite's glob import. No runtime fetch — works in dev, preview, and any static host.
  */
-const postModules = import.meta.glob<string>('../content/posts/*.md', {
+const postModules = import.meta.glob<string>('/blog/*.md', {
   eager: true,
   query: '?raw',
   import: 'default',

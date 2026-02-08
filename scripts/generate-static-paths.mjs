@@ -13,7 +13,7 @@ import matter from 'gray-matter'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const distDir = join(root, 'dist')
-const postsDir = join(root, 'src', 'content', 'posts')
+const postsDir = join(root, 'blog')
 const indexHtmlPath = join(distDir, 'index.html')
 
 if (!existsSync(indexHtmlPath)) {

@@ -13,18 +13,18 @@ Guidance for AI agents working on this project.
 ## Project Structure
 
 ```
+blog/            # Blog posts (*.md)
 src/
-  components/     # Layout, Navbar, PageMeta, Breadcrumbs, Tags, SocialLinks, ThemeToggle, ReadTime
+  components/    # Layout, Navbar, PageMeta, Breadcrumbs, Tags, SocialLinks, ThemeToggle, ReadTime
   content/
-    posts/        # Blog posts (*.md)
-    about.md      # About page content
-  lib/            # posts.ts, post-icons.tsx, site.ts, social.ts, about.ts, read-time.ts
-  pages/          # Home, About, Blog, BlogPost, Contact, NotFound
+    about.md     # About page content
+  lib/           # posts.ts, post-icons.tsx, site.ts, social.ts, about.ts, read-time.ts
+  pages/         # Home, About, Blog, BlogPost, Contact, NotFound
 ```
 
 ## Blog
 
-- **Content**: Add `.md` files in `src/content/posts/` with required frontmatter: `title`, `slug`, `date`, `language`, and optional `description`, `tags`.
+- **Content**: Add `.md` files in `blog/` (project root) with required frontmatter: `title`, `slug`, `date`, `language`, and optional `description`, `tags`.
 - **Loading**: Posts are loaded at build time via `import.meta.glob` — no runtime fetch.
 - **API**: `getPosts()`, `getPost(slug)`, `getAllTags(posts)`, `filterPostsByTag(posts, tag)` from `src/lib/posts.ts`.
 - **Routes**: `/blog` (list), `/blog/:slug` (post), `/tags/:tag` (filtered list).

@@ -11,7 +11,7 @@ import matter from 'gray-matter'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
-const postsDir = join(root, 'src', 'content', 'posts')
+const postsDir = join(root, 'blog')
 const outFile = join(root, 'dist', 'rss.xml')
 
 const SITE_URL = process.env.SITE_URL || 'https://vitor.run'

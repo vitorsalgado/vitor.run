@@ -101,7 +101,7 @@ export function Blog() {
           <p className="text-neutral-500 dark:text-neutral-400 mt-6">
             {tagParam
               ? `No posts tagged with "${tagParam}".`
-              : 'No posts yet. Add .md files in src/content/posts/ with frontmatter (title, date, optional description, tags).'}
+              : 'No posts yet. Add .md files in blog/ with frontmatter (title, date, optional description, tags).'}
           </p>
         </div>
       ) : (
