@@ -170,7 +170,7 @@ export function Navbar() {
                         ref={index === 0 ? firstMenuLinkRef : undefined}
                         to={to}
                         onClick={() => setMenuOpen(false)}
-                        className={`block px-4 py-3 text-base font-medium rounded-md transition-colors ${
+                        className={`block px-4 py-3 text-base font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-inset ${
                           isActive(to)
                             ? ''
                             : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
@@ -193,7 +193,7 @@ export function Navbar() {
                     <Link
                       to="/contact"
                       onClick={() => setMenuOpen(false)}
-                      className={`block px-4 py-3 text-base font-medium rounded-md transition-colors ${
+                      className={`block px-4 py-3 text-base font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-inset ${
                         location.pathname === '/contact'
                           ? ''
                           : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
@@ -217,7 +217,7 @@ export function Navbar() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-3 text-base font-medium rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                      className="block px-4 py-3 text-base font-medium rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-inset"
                       style={{ color: isDark ? 'rgb(243, 244, 246)' : 'rgb(17, 24, 39)' }}
                       aria-label="RSS feed (opens in new tab)"
                     >
