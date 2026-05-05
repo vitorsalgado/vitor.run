@@ -8,8 +8,14 @@ export interface PostMeta {
   tags: string[]
   slug: string
   language: string
+  /** Whether the post is published. Only posts with publish: true are included. */
+  publish: boolean
   /** Read time in minutes, computed at build time from content (text, images, code/diagram blocks). */
   readTimeMinutes: number
+  /** Optional cover image URL (Vite-resolved asset from blog/assets/). Set frontmatter "cover: filename.jpg" and place image in blog/assets/. */
+  cover?: string
+  /** Optional caption for the cover image. Set frontmatter "cover_caption: ..." */
+  coverCaption?: string
 }
 
 export interface Post {
@@ -28,6 +34,30 @@ const postModules = import.meta.glob<string>('/blog/*.md', {
   import: 'default',
 })
 
+/**
+ * Cover images in blog/assets/ are glob-imported so Vite bundles them (hashed filenames, etc.).
+ * Frontmatter "cover: filename.jpg" resolves to the asset URL for blog/assets/filename.jpg.
+ */
+const coverModules = import.meta.glob<string>(
+  '/blog/assets/*.{jpg,jpeg,png,webp,gif}',
+  { eager: true, import: 'default' }
+)
+
+function getCoverUrl(coverFromFrontmatter: string): string | undefined {
+  return resolveBlogAssetUrl(coverFromFrontmatter)
+}
+
+/** Resolves a path to blog/assets/ into the Vite-bundled asset URL. Use in markdown images: ![alt](blog/assets/filename.jpg) */
+export function resolveBlogAssetUrl(path: string): string | undefined {
+  const filename = path.trim()
+  if (!filename) return undefined
+  if (filename.startsWith('http://') || filename.startsWith('https://')) return filename
+  const name = filename.replace(/^\/blog\/assets\//, '').replace(/^blog\/assets\//, '').replace(/^assets\//, '')
+  const mod = coverModules[`/blog/assets/${name}`] ?? coverModules[`blog/assets/${name}`]
+  if (mod == null) return undefined
+  return typeof mod === 'string' ? mod : (mod as { default?: string }).default
+}
+
 function parsePost(path: string, raw: string): Post {
   const { data, content: body } = matter(raw)
   const file = path.split('/').pop() ?? path
@@ -43,6 +73,12 @@ function parsePost(path: string, raw: string): Post {
     throw new Error(`Post is missing required frontmatter "language": ${file}`)
   }
   const language = languageRaw.trim()
+
+  const publishRaw = data.publish
+  if (publishRaw === undefined || publishRaw === null) {
+    throw new Error(`Post is missing required frontmatter "publish": ${file}`)
+  }
+  const publish = publishRaw === true || publishRaw === 'true'
 
   // Handle date parsing - gray-matter might parse dates as Date objects or strings
   // Date is required and must be valid
@@ -75,6 +111,18 @@ function parsePost(path: string, raw: string): Post {
 
   const readTimeMinutes = getReadTimeMinutes(body)
 
+  const coverRaw = data.cover
+  const cover =
+    typeof coverRaw === 'string' && coverRaw.trim() !== ''
+      ? getCoverUrl(coverRaw.trim())
+      : undefined
+
+  const coverCaptionRaw = data.cover_caption ?? data.coverCaption
+  const coverCaption =
+    typeof coverCaptionRaw === 'string' && coverCaptionRaw.trim() !== ''
+      ? coverCaptionRaw.trim()
+      : undefined
+
   return {
     slug,
     meta: {
@@ -84,16 +132,19 @@ function parsePost(path: string, raw: string): Post {
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
       slug,
       language,
+      publish,
       readTimeMinutes,
+      cover,
+      coverCaption,
     },
     content: body,
   }
 }
 
 function getPostsList(): Post[] {
-  const list = Object.entries(postModules).map(([path, raw]) =>
-    parsePost(path, typeof raw === 'string' ? raw : String(raw))
-  )
+  const list = Object.entries(postModules)
+    .map(([path, raw]) => parsePost(path, typeof raw === 'string' ? raw : String(raw)))
+    .filter((post) => post.meta.publish)
   return list.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 }
 

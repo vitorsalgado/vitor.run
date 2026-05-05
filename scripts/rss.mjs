@@ -36,6 +36,8 @@ const posts = files
   .map((f) => {
     const raw = readFileSync(join(postsDir, f), 'utf-8')
     const { data } = matter(raw)
+    const publish = data.publish === true || data.publish === 'true'
+    if (!publish) return null
     const slug = typeof data.slug === 'string' && data.slug.trim() ? data.slug.trim() : f.replace(/\.md$/, '')
     return {
       title: (data.title || slug),
@@ -45,6 +47,7 @@ const posts = files
       link: `${SITE_URL}/blog/${encodeURIComponent(slug)}`,
     }
   })
+  .filter(Boolean)
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
 const items = posts

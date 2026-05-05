@@ -40,6 +40,8 @@ try {
   for (const f of files) {
     const raw = readFileSync(join(postsDir, f), 'utf-8')
     const { data } = matter(raw)
+    const publish = data.publish === true || data.publish === 'true'
+    if (!publish) continue
     const slug = typeof data.slug === 'string' && data.slug.trim() ? data.slug.trim() : null
     if (slug) postSlugs.push(slug)
     const tags = Array.isArray(data.tags) ? data.tags : []

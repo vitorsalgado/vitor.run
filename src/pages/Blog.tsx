@@ -112,7 +112,8 @@ export function Blog() {
                 key={post.slug}
                 className="border-b border-neutral-100 dark:border-0 pb-6 last:border-0"
               >
-                <div className="-mx-6 px-6 py-3 rounded transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                <div className="-mx-6 px-6 py-3 rounded transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 flex gap-4 items-start">
+                  <div className="min-w-0 flex-1">
                   <time
                     dateTime={post.meta.date}
                     className="block text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap mb-3"
@@ -173,6 +174,20 @@ export function Blog() {
                     Read article
                     <span aria-hidden>&gt;</span>
                   </Link>
+                  </div>
+                  {post.meta.cover && (
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-700"
+                      aria-hidden
+                    >
+                      <img
+                        src={post.meta.cover}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    </Link>
+                  )}
                 </div>
               </li>
             ))}

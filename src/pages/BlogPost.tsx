@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Link as LinkIcon, Share2, Linkedin, Twitter, Copy } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
@@ -8,9 +8,10 @@ import { Breadcrumbs } from '../components/Breadcrumbs'
 import { DisqusComments } from '../components/DisqusComments'
 import { PageMeta } from '../components/PageMeta'
 import { ReadTime } from '../components/ReadTime'
+import { StravaEmbed } from '../components/StravaEmbed'
 import { NotFound } from './NotFound'
 import type { Post } from '../lib/posts'
-import { getPost } from '../lib/posts'
+import { getPost, resolveBlogAssetUrl } from '../lib/posts'
 
 function CodeBlock({
   children,
@@ -163,6 +164,7 @@ export function BlogPost() {
         canonicalPath={`/blog/${post.slug}`}
         keywords={post.meta.tags}
         type="article"
+        image={post.meta.cover}
         publishedTime={post.meta.date ? new Date(post.meta.date).toISOString() : undefined}
         section="Blog"
         breadcrumbList={postBreadcrumbList}
@@ -259,6 +261,20 @@ export function BlogPost() {
           </div>
         </div>
       </header>
+      {post.meta.cover && (
+        <figure className="-mx-6 mb-8 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
+          <img
+            src={post.meta.cover}
+            alt={post.meta.coverCaption ?? ''}
+            className="w-full aspect-[21/9] object-cover"
+          />
+          {post.meta.coverCaption && (
+            <figcaption className="px-4 py-2 text-sm text-neutral-500 dark:text-neutral-400 text-center">
+              {post.meta.coverCaption}
+            </figcaption>
+          )}
+        </figure>
+      )}
       <div className="prose prose-slate">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
@@ -269,7 +285,44 @@ export function BlogPost() {
             h4: 'h4',
             h5: 'h5',
             h6: 'h6',
-            pre: ({ children, ...props }: React.ComponentProps<'pre'>) => {
+            img: ({ src, alt, node, ...props }) => {
+              const resolvedSrc =
+                src && (src.includes('blog/assets/') || src.startsWith('/blog/assets/'))
+                  ? resolveBlogAssetUrl(src) ?? src
+                  : src
+              const caption = alt?.trim()
+              const imgEl = (
+                <img src={resolvedSrc} alt={alt ?? ''} className="rounded-lg" {...props} />
+              )
+              if (caption) {
+                return (
+                  <figure>
+                    {imgEl}
+                    <figcaption className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 text-center">
+                      {caption}
+                    </figcaption>
+                  </figure>
+                )
+              }
+              return imgEl
+            },
+            pre: ({ children, ...props }) => {
+              const codeChild = React.Children.only(children) as React.ReactElement<{ className?: string; children?: React.ReactNode }>
+              const isStrava = codeChild?.props?.className?.includes('language-strava')
+              const rawContent = isStrava ? String(codeChild?.props?.children ?? '').trim() : ''
+              const attrs: Record<string, string> = {}
+              for (const line of rawContent.split(/\r?\n/)) {
+                const match = line.trim().match(/^(\w+):(.+)$/)
+                if (match) attrs[match[1].toLowerCase()] = match[2].trim()
+              }
+              const activityId = attrs.activity_id ?? attrs.activityid ?? ''
+              const styleVal = attrs.style?.toLowerCase()
+              const style = styleVal && ['standard', 'dark', 'light'].includes(styleVal) ? styleVal as 'standard' | 'dark' | 'light' : 'standard'
+
+              if (activityId) {
+                return <StravaEmbed activityId={activityId} style={style} />
+              }
+
               const codeId = `code-${Math.random().toString(36).substring(2, 9)}`
               const handleCopy = () => {
                 setCopiedCodeId(codeId)
@@ -277,9 +330,8 @@ export function BlogPost() {
                   setCopiedCodeId(null)
                 }, 2000)
               }
-              // Extract onCopy if it exists to avoid conflict with our custom onCopy handler
               const { onCopy: _ignoredOnCopy, ...restProps } = props as { onCopy?: unknown; [key: string]: unknown }
-              void _ignoredOnCopy // Explicitly mark as intentionally unused
+              void _ignoredOnCopy
               return (
                 <CodeBlock
                   codeId={codeId}

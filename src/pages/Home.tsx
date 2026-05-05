@@ -40,9 +40,6 @@ export function Home() {
       <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-md mx-auto">
         Software Engineer<br />From São Paulo, Brasil 🇧🇷, currently living in Berlin, Germany 🇩🇪
       </p>
-      <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-8">
-        We are what we do, especially what we do to change what we are.
-      </p>
       <SocialLinks />
     </div>
   )

@@ -13,7 +13,7 @@ Guidance for AI agents working on this project.
 ## Project Structure
 
 ```
-blog/            # Blog posts (*.md)
+blog/            # Blog posts (*.md), assets/ (covers and other assets, Vite-bundled)
 src/
   components/    # Layout, Navbar, PageMeta, Breadcrumbs, Tags, SocialLinks, ThemeToggle, ReadTime
   content/
@@ -24,7 +24,7 @@ src/
 
 ## Blog
 
-- **Content**: Add `.md` files in `blog/` (project root) with required frontmatter: `title`, `slug`, `date`, `language`, and optional `description`, `tags`.
+- **Content**: Add `.md` files in `blog/` (project root) with required frontmatter: `title`, `slug`, `date`, `language`, `publish` (boolean), and optional `description`, `tags`, `cover`. Only posts with `publish: true` are shown. Optional `cover`: filename (e.g. `cover: my-post.jpg`); place the image in `blog/assets/`. Optional `cover_caption`: caption shown below the cover. Vite bundles assets in `blog/assets/` like `src/assets` (hashed URLs). Cover is shown on the post page (Medium-style) and as a thumbnail on the blog list.
 - **Loading**: Posts are loaded at build time via `import.meta.glob` — no runtime fetch.
 - **API**: `getPosts()`, `getPost(slug)`, `getAllTags(posts)`, `filterPostsByTag(posts, tag)` from `src/lib/posts.ts`.
 - **Routes**: `/blog` (list), `/blog/:slug` (post), `/tags/:tag` (filtered list).

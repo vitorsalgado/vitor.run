@@ -28,8 +28,10 @@ slug: ${dateStr}-post
 date: ${dateStr}
 description: TODO
 language: EN
+publish: true
 tags:
   - TODO
+# cover: filename.jpg (optional; place image in blog/assets/)
 ---
 
 Write your content here.

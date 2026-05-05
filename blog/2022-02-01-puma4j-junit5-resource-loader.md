@@ -4,6 +4,7 @@ slug: puma4j-easier-way-to-load-and-convert-resource-files-in-your-junit-tests
 date: 2022-02-01
 description: Load and parse file resources into JUnit tests with just a couple of annotations.
 language: EN
+publish: true
 tags:
   - tech
   - java

@@ -6,8 +6,8 @@ description: Learn more about Vitor Hugo Salgado, a Software Engineer and open-s
 # About
 
 Hello, I'm Vitor, a Software Engineer at [Verve Group](https://verve.com/).  
-I'm originally from São Paulo, Brazil, and now living in Berlin, Germany. I'm an alumnus of [FATEC Praia Grande](https://fatecpg.cps.sp.gov.br/) where I graduated in Information Technology for Business Management. 
-I code as a hobby and like to create open-source projects for fun.
+I'm from São Paulo, Brazil, and now I live in Berlin, Germany. I'm an alumnus of [FATEC Praia Grande](https://fatecpg.cps.sp.gov.br/) where I graduated in Information Technology for Business Management.  
+I code as a hobby and I like to create open-source projects for fun.
 
 I love hiking, trekking, sports in general, and I've been working toward running a marathon, with some ups and downs.
 
