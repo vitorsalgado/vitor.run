@@ -385,6 +385,74 @@ header.sticky button:focus-visible {
   border-radius: 0.5rem;
 }
 
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .prose table {
+  border-color: #3f3f46;
+}
+
+.prose thead {
+  background-color: #f1f5f9;
+}
+
+.dark .prose thead {
+  background-color: #27272a;
+}
+
+.prose thead th {
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .prose thead th {
+  color: #a1a1aa;
+  border-bottom-color: #3f3f46;
+}
+
+.prose tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.1s;
+}
+
+.prose tbody tr:last-child {
+  border-bottom: none;
+}
+
+.prose tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.dark .prose tbody tr {
+  border-bottom-color: #3f3f46;
+}
+
+.dark .prose tbody tr:hover {
+  background-color: #1f1f23;
+}
+
+.prose tbody td {
+  padding: 0.65rem 1rem;
+  color: var(--color-ink);
+}
+
+.dark .prose tbody td {
+  color: #d4d4d8;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
