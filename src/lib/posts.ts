@@ -10,6 +10,7 @@ export interface PostMeta {
   language: string
   /** Read time in minutes, computed at build time from content (text, images, code/diagram blocks). */
   readTimeMinutes: number
+  draft?: boolean
 }
 
 export interface Post {
@@ -85,15 +86,16 @@ function parsePost(path: string, raw: string): Post {
       slug,
       language,
       readTimeMinutes,
+      draft: data.draft === true,
     },
     content: body,
   }
 }
 
 function getPostsList(): Post[] {
-  const list = Object.entries(postModules).map(([path, raw]) =>
-    parsePost(path, typeof raw === 'string' ? raw : String(raw))
-  )
+  const list = Object.entries(postModules)
+    .map(([path, raw]) => parsePost(path, typeof raw === 'string' ? raw : String(raw)))
+    .filter((post) => !post.meta.draft)
   return list.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 }
 

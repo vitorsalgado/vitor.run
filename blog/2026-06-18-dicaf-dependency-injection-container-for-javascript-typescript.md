@@ -10,6 +10,7 @@ tags:
   - javascript
   - open-source
   - dependency injection
+draft: true
 ---
 
 Hello everyone! Today I'm sharing my new open source project: **DiCaf**
