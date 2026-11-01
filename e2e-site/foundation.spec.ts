@@ -125,7 +125,7 @@ test('local content additions, edits, and draft changes refresh generated routes
   const writeFixture = (title: string, draft: boolean) => writeFileSync(file, [
     '---', `title: ${title}`, 'slug: milestone-one-content-watch-fixture',
     'date: 2026-01-01', 'description: Local content watcher proof.',
-    'language: EN', 'tags: [tech]', `draft: ${draft}`, '---', '', 'Content watcher proof.',
+    'language: EN', 'tags: [Tech, tech, data pipelines, Café]', `draft: ${draft}`, '---', '', 'Content watcher proof.',
   ].join('\n'), { flag: 'w' })
   const moduleText = async () => {
     try { return await (await request.get(moduleUrl, { headers: { Accept: 'application/javascript' } })).text() }
@@ -138,6 +138,14 @@ test('local content additions, edits, and draft changes refresh generated routes
     await expect.poll(moduleText, { timeout: 15_000 }).toContain('Local watcher first title')
     await page.goto(`http://127.0.0.1:5174${route}`)
     await expect(page.getByRole('heading', { name: 'Local watcher first title' })).toBeVisible()
+    await page.getByRole('link', { name: 'Blog', exact: true }).last().click()
+    await page.locator('.tag-list').getByRole('link', { name: 'data pipelines', exact: true }).click()
+    await expect(page).toHaveURL('http://127.0.0.1:5174/tags/data%20pipelines/')
+    await expect(page.getByRole('link', { name: 'Local watcher first title', exact: true })).toBeVisible()
+    await page.locator('.tag-list').getByRole('link', { name: 'café', exact: true }).click()
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://vitor.run/tags/caf%C3%A9/')
+    await expect(page.getByRole('link', { name: 'Local watcher first title', exact: true })).toBeVisible()
+    await page.goto(`http://127.0.0.1:5174${route}`)
     writeFixture('Local watcher updated title', false)
     await expect.poll(moduleText, { timeout: 15_000 }).toContain('Local watcher updated title')
     await page.reload()

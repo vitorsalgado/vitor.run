@@ -17,7 +17,7 @@ const { frontmatter, params } = useData()
       <time :datetime="frontmatter.date">{{ new Date(frontmatter.date).toLocaleDateString('en-US', {
         year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
       }) }}</time>
-      <span aria-hidden="true">·</span><span>{{ frontmatter.language }}</span>
+      <span aria-hidden="true">·</span><span>{{ frontmatter.language.toUpperCase() }}</span>
       <span aria-hidden="true">·</span><span>{{ frontmatter.readTimeMinutes }} min read</span>
     </div>
   </header>

@@ -2,8 +2,12 @@ import { copyFileSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
-import { postsDirectory } from './posts'
+import { getPublishedPosts, postsDirectory } from './posts'
+import { rebasePostImage } from './post-images'
 import { socialLinks } from '../../src/lib/social'
+
+// Validate before VitePress loads route modules, whose errors can otherwise become warnings.
+const posts = getPublishedPosts()
 
 export default defineConfig({
   title: 'vitor.run',
@@ -12,7 +16,21 @@ export default defineConfig({
   lang: 'en',
   appearance: { storageKey: 'theme' },
   cleanUrls: true,
-  markdown: { languageAlias: { gradle: 'groovy' } },
+  markdown: {
+    languageAlias: { gradle: 'groovy' },
+    config(markdown) {
+      const renderImage = markdown.renderer.rules.image!
+      markdown.renderer.rules.image = (tokens, index, options, env: {
+        path: string
+        frontmatter?: { slug?: string }
+      }, renderer) => {
+        const post = posts.find((post) => post.slug === env.frontmatter?.slug)
+        const source = tokens[index].attrGet('src')
+        if (post && source) tokens[index].attrSet('src', rebasePostImage(source, post.sourcePath, env.path))
+        return renderImage(tokens, index, options, env, renderer)
+      }
+    },
+  },
   head: [
     ['meta', { name: 'robots', content: 'noindex, nofollow' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
@@ -50,7 +68,7 @@ export default defineConfig({
     const path = `/${page.relativePath.replace(/index\.md$/, '')}`
     page.frontmatter.head ??= []
     page.frontmatter.head.push(['link', {
-      rel: 'canonical', href: `https://vitor.run${path}`,
+      rel: 'canonical', href: new URL(path, 'https://vitor.run').href,
     }])
   },
   buildEnd(config) {

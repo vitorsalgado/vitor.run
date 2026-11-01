@@ -24,7 +24,7 @@ const tags = [...new Set(posts.flatMap((post) => post.tags))].sort()
         }) }}</time>
         <h2><a :href="`/blog/${post.slug}/`">{{ post.title }}</a></h2>
         <div class="post-details">
-          <span>{{ post.language }}</span><span aria-hidden="true">·</span>
+          <span>{{ post.language.toUpperCase() }}</span><span aria-hidden="true">·</span>
           <span>{{ post.readTimeMinutes }} min read</span><span aria-hidden="true">·</span>
           <a v-for="postTag in post.tags" :key="postTag"
             :href="`/tags/${encodeURIComponent(postTag.toLowerCase())}/`">{{ postTag }}</a>
