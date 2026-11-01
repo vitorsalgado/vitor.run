@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import avatar from '../../../src/assets/avatar.jpeg'
-import { socialLinks } from '../../../src/lib/social'
+import { useData } from 'vitepress'
+import { VPSocialLinks } from 'vitepress/theme-without-fonts'
+
+const { theme } = useData()
 </script>
 
 <template>
-  <section class="home-page">
+  <main class="home-page">
     <img :src="avatar" alt="Vitor Hugo Salgado" width="160" height="160" fetchpriority="high" />
     <h1>Vitor Hugo Salgado</h1>
     <p class="home-introduction">
@@ -13,10 +16,7 @@ import { socialLinks } from '../../../src/lib/social'
     </p>
     <p class="home-quote">We are what we do, especially what we do to change what we are.</p>
     <nav aria-label="Social links">
-      <a v-for="link in socialLinks" :key="link.platform" :href="link.href"
-        target="_blank" rel="noopener noreferrer" :aria-label="`${link.label} (opens in new tab)`">
-        {{ link.label }}
-      </a>
+      <VPSocialLinks :links="theme.socialLinks" />
     </nav>
-  </section>
+  </main>
 </template>

@@ -12,6 +12,7 @@ export const contactLinks = [
 
 export const SITE = {
   name: 'vitor.run',
+  url: 'https://vitor.run',
   locale: 'en_US',
   author: 'Vitor Hugo Salgado',
   disqusShortname: 'vitor-run',

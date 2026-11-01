@@ -5,6 +5,7 @@ import { defineConfig } from 'vitepress'
 import { getPublishedPosts, postsDirectory } from './posts'
 import { rebasePostImage } from './post-images'
 import { socialLinks } from '../../src/lib/social'
+import taskLists from 'markdown-it-task-lists'
 
 // Validate before VitePress loads route modules, whose errors can otherwise become warnings.
 const posts = getPublishedPosts()
@@ -19,6 +20,7 @@ export default defineConfig({
   markdown: {
     languageAlias: { gradle: 'groovy' },
     config(markdown) {
+      markdown.use(taskLists, { label: true })
       const renderImage = markdown.renderer.rules.image!
       markdown.renderer.rules.image = (tokens, index, options, env: {
         path: string
@@ -48,7 +50,9 @@ export default defineConfig({
     docFooter: { prev: false, next: false },
     nav: [
       { text: 'Home', link: '/' },
+      { text: 'About', link: '/about/' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/(blog|tags)/' },
+      { text: 'Contact', link: '/contact/' },
     ],
     socialLinks: socialLinks.map(({ platform, href, label }) => ({
       icon: platform.toLowerCase(), link: href, ariaLabel: label,

@@ -165,6 +165,132 @@
   text-underline-offset: 3px;
 }
 
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 4px;
+}
+
+.post-icon {
+  color: var(--vp-c-brand-1);
+  flex-shrink: 0;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.post-actions button,
+.post-share summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.post-actions button:hover,
+.post-share summary:hover {
+  background: var(--vp-c-default-soft);
+  color: var(--vp-c-text-1);
+}
+
+.post-share {
+  position: relative;
+}
+
+.post-share summary {
+  list-style: none;
+}
+
+.post-share summary::-webkit-details-marker {
+  display: none;
+}
+
+.post-share nav {
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  top: 100%;
+  min-width: 140px;
+  padding: 6px;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  box-shadow: var(--vp-shadow-2);
+}
+
+.post-share nav a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.post-share nav a:hover {
+  background: var(--vp-c-default-soft);
+}
+
+.post-action-status {
+  font-size: 13px;
+}
+
+.post-footer {
+  margin-top: 40px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.post-footer .tag-list {
+  justify-content: flex-start;
+}
+
+.post-comments {
+  padding: 24px 0;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.post-comments h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.post-comments p {
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
+
+.vp-doc .contact-links {
+  list-style: none;
+  padding: 0;
+  margin-top: 32px;
+}
+
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.contact-links svg {
+  color: var(--vp-c-brand-1);
+  flex-shrink: 0;
+}
+
+.vp-doc .contains-task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.task-list-item-checkbox {
+  margin-right: 8px;
+}
+
 @media (max-width: 639px) {
   .home-page {
     padding-top: 64px;

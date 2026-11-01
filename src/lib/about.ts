@@ -7,10 +7,10 @@ export interface AboutContent {
 }
 
 /**
- * About page content is loaded at build time from src/content/about.md
+ * About page content is loaded at build time from site/about/index.md
  * via Vite's glob import. No runtime fetch — works in dev, preview, and any static host.
  */
-const aboutModule = import.meta.glob<string>('../content/about.md', {
+const aboutModule = import.meta.glob<string>('../../site/about/index.md', {
   eager: true,
   query: '?raw',
   import: 'default',
