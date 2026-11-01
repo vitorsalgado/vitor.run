@@ -11,6 +11,7 @@ data are generated. The current React build and deployment remain the default.
 
 ```sh
 npm run site:dev
+npm run site:dev:drafts
 npm run content:check
 npm run content:test
 npm run site:build
@@ -18,8 +19,9 @@ npm run site:preview
 npm run site:test
 ```
 
-Development uses <http://127.0.0.1:5174>; production preview uses
-<http://127.0.0.1:4176>. The build writes to `site/.vitepress/dist` and uses
+Development uses <http://127.0.0.1:5174>; draft preview uses
+<http://127.0.0.1:5178>; production preview uses <http://127.0.0.1:4176>.
+The build writes to `site/.vitepress/dist` and uses
 trailing-slash directory routes. The proof intentionally emits `noindex,
 nofollow`; it is not the production cutover.
 
@@ -28,10 +30,10 @@ verify directory redirects and real 404 responses, plus a separate development
 server to verify content watching. For an existing Google Chrome installation,
 run `PLAYWRIGHT_CHANNEL=chrome npm run site:test`; otherwise install Playwright's
 Chromium with `npm run e2e:install`. Screenshots are saved under
-`.local/milestone1/` and `.local/milestone3/`.
+`.local/milestone1/`, `.local/milestone3/`, and `.local/milestone4/`.
 
 Still to migrate: production analytics, complete SEO metadata and feeds,
-publishing commands, and CI/deployment.
+and CI/deployment.
 
 Dependency review remains open: `npm audit` reports 15 advisory package entries at
 this checkpoint, including VitePress 1's Vite/esbuild development dependencies.
@@ -106,3 +108,65 @@ Use public route URLs such as `/contact/` or `/blog/my-slug/` for internal links
 
 RSS navigation will return with the generated feed in milestone 5. The migration
 still emits `noindex, nofollow`, and production analytics remains disabled here.
+
+### Writing and publishing — milestone 4
+
+Use Node.js 24. Create a post with a quoted title:
+
+```sh
+npm run new:post -- "My new post"
+# Optional explicit slug, including for titles without Latin characters:
+npm run new:post -- "日本語" --slug japanese-article
+npm run new:post -- --help
+```
+
+The command creates `blog/YYYY-MM-DD-my-new-post.md`, using the computer's local
+calendar date. It fills the required metadata, defaults the language to `en`,
+sets `draft: true`, and leaves the body empty for you to write. Titles are safely
+serialized as YAML. Automatic slugs normalize accents and punctuation; review
+the slug before publication. Existing slugs in both drafts and published posts
+are reserved by the command. Existing files are never overwritten, including
+when two commands run at the same time. Running the command without a title
+prints usage and creates nothing.
+
+1. **Write and preview.** Run `npm run site:dev:drafts` and open
+   <http://127.0.0.1:5178/blog/>. The localhost server includes drafts in the blog,
+   tag archives, and article routes. A banner marks the whole preview, and draft
+   posts carry their own label. Sharing and comments are hidden on drafts.
+   Changes to content, tags, and the draft flag refresh the routes automatically.
+2. **Prepare publication.** Edit the body, date, language, optional description,
+   and tags in the Markdown file. Keep `draft: true` until the post is ready.
+   Draft preview validates the required metadata and local images of everything
+   it displays; hand-written drafts need a valid title, slug, date, and language
+   before previewing. Empty bodies and `TODO` titles/descriptions are allowed in
+   this preview. An invalid draft does not block the normal build or ordinary
+   development server, provided its YAML and boolean draft flag are valid.
+3. **Validate the published result.** Set `draft: false`, then run:
+
+   ```sh
+   npm run content:check
+   npm run site:build
+   npm run site:preview
+   ```
+
+   Review the article, blog entry, tags, images, and copied code at
+   <http://127.0.0.1:4176>. An empty body or `TODO`/`TBD` title or description
+   fails publication validation. Description remains optional. VitePress preview
+   should be restarted after rebuilding so it serves the current asset names.
+
+`npm run site:dev` includes only published posts. `site:build` and direct
+`vitepress build site` also exclude drafts, even if the draft-preview environment
+flag is inherited. `content:check` always checks published posts and ignores
+draft bodies and incomplete draft metadata. A future date does not schedule a
+post; the draft flag controls publication. Set it back to `true` to unpublish,
+then rebuild to remove the route, draft-only tags, and imported assets.
+
+These steps prepare the VitePress artifact for review. CI/deployment still uses
+the legacy React build until milestone 6; its existing bundle and feed generators
+still include draft source/metadata. VitePress's draft exclusion does not change
+that legacy output. Deployment instructions will be finalized with the cutover.
+
+`content:test` includes isolated CLI tests for slug/file collisions, concurrent
+creation, YAML escaping, and publication validation. Browser tests cover creating,
+previewing, editing, publishing, and unpublishing a post; production build tests
+verify draft exclusion with the preview flag deliberately enabled.

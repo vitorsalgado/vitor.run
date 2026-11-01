@@ -9,13 +9,12 @@ import { validatePostImages } from './post-images.ts'
 
 export const postsDirectory = fileURLToPath(new URL('../../blog/', import.meta.url))
 
-export function getPublishedPosts(directory = postsDirectory): (Post & { sourcePath: string })[] {
-  const slugs = new Map<string, string>()
-
+/** Read strict YAML once for both publication validation and post creation. */
+export function getPostSources(directory = postsDirectory) {
   return readdirSync(directory)
     .filter((file) => file.endsWith('.md'))
     .sort()
-    .flatMap((file) => {
+    .map((file) => {
       const sourcePath = join(directory, file)
       const raw = readFileSync(sourcePath, 'utf8').replace(/^\uFEFF/, '')
       function fail(field: string, message: string): never {
@@ -52,7 +51,36 @@ export function getPublishedPosts(directory = postsDirectory): (Post & { sourceP
       if (data.draft !== undefined && typeof data.draft !== 'boolean') {
         fail('draft', 'must be true or false, without quotes')
       }
-      if (data.draft === true) return []
+      return { sourcePath, data, content }
+    })
+}
+
+export function isPostSlug(slug: string) {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
+}
+
+export function isDraftPreview() {
+  // VitePress sets NODE_ENV=production before loading config, routes, and data for builds.
+  return process.env.VITOR_PREVIEW_DRAFTS === '1' && process.env.NODE_ENV !== 'production'
+}
+
+export function getPublishedPosts(directory = postsDirectory) {
+  return getPosts(directory, false)
+}
+
+export function getSitePosts(directory = postsDirectory) {
+  return getPosts(directory, isDraftPreview())
+}
+
+function getPosts(directory: string, includeDrafts: boolean): (Post & { sourcePath: string })[] {
+  const slugs = new Map<string, string>()
+  return getPostSources(directory)
+    .flatMap(({ sourcePath, data, content }) => {
+      const draft = data.draft === true
+      if (draft && !includeDrafts) return []
+      function fail(field: string, message: string): never {
+        throw new Error(`${sourcePath}: "${field}" ${message}`)
+      }
 
       const fields = new Set(['title', 'slug', 'date', 'language', 'description', 'tags', 'draft'])
       for (const field of Object.keys(data)) {
@@ -64,9 +92,9 @@ export function getPublishedPosts(directory = postsDirectory): (Post & { sourceP
         return value.trim()
       }
       const title = requiredText('title')
-      if (/^(TODO|TBD)$/i.test(title)) fail('title', 'must be replaced before publishing')
+      if (!draft && /^(TODO|TBD)$/i.test(title)) fail('title', 'must be replaced before publishing')
       const slug = requiredText('slug')
-      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      if (!isPostSlug(slug)) {
         fail('slug', 'must contain lowercase letters, digits, and single hyphens')
       }
       const previous = slugs.get(slug)
@@ -91,7 +119,7 @@ export function getPublishedPosts(directory = postsDirectory): (Post & { sourceP
         fail('description', 'must be a string when provided')
       }
       const description = typeof data.description === 'string' ? data.description.trim() : ''
-      if (/^(TODO|TBD)$/i.test(description)) fail('description', 'must be replaced before publishing')
+      if (!draft && /^(TODO|TBD)$/i.test(description)) fail('description', 'must be replaced before publishing')
 
       if (data.tags !== undefined && !Array.isArray(data.tags)) fail('tags', 'must be an array of strings')
       const tags = [...new Set(((data.tags ?? []) as unknown[]).map((value, index) => {
@@ -103,7 +131,7 @@ export function getPublishedPosts(directory = postsDirectory): (Post & { sourceP
         return tag
       }))]
 
-      if (!content.trim()) fail('content', 'must not be empty for a published post')
+      if (!draft && !content.trim()) fail('content', 'must not be empty for a published post')
       validatePostImages(content, sourcePath)
 
       return [{
@@ -111,6 +139,7 @@ export function getPublishedPosts(directory = postsDirectory): (Post & { sourceP
         sourcePath,
         content,
         meta: {
+          ...(draft && { draft: true }),
           title,
           slug,
           date,

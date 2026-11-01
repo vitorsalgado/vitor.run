@@ -4,7 +4,7 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node
 import { join } from 'node:path'
 import { test, type TestContext } from 'node:test'
 import { stringify } from 'yaml'
-import { getPublishedPosts } from './posts.ts'
+import { getPublishedPosts, getSitePosts } from './posts.ts'
 
 const metadata = {
   title: 'A useful article',
@@ -191,4 +191,26 @@ test('a local image symlink cannot publish a file from outside the project', (t)
   symlinkSync(process.execPath, join(directory, 'outside-image.svg'))
   writePost(directory, {}, '![Illustration](outside-image.svg)')
   assert.throws(() => getPublishedPosts(directory), /article\.md: image.*must stay inside the project directory/)
+})
+
+test('draft previews include labelled drafts while publication ignores the preview flag', (t) => {
+  const directory = fixture(t)
+  const previous = { flag: process.env.VITOR_PREVIEW_DRAFTS, mode: process.env.NODE_ENV }
+  t.after(() => {
+    for (const [name, value] of [['VITOR_PREVIEW_DRAFTS', previous.flag], ['NODE_ENV', previous.mode]]) {
+      if (value === undefined) delete process.env[name!]
+      else process.env[name!] = value
+    }
+  })
+  writePost(directory)
+  writePost(directory, { draft: true, slug: 'draft-post', title: 'TODO', description: 'TODO' }, '', 'draft.md')
+  process.env.NODE_ENV = 'development'
+  delete process.env.VITOR_PREVIEW_DRAFTS
+  assert.deepEqual(getSitePosts(directory).map((post) => post.slug), ['useful-article'])
+  process.env.VITOR_PREVIEW_DRAFTS = '1'
+  assert.equal(getSitePosts(directory).length, 2)
+  assert.equal(getSitePosts(directory).find((post) => post.slug === 'draft-post')?.meta.draft, true)
+  assert.deepEqual(getPublishedPosts(directory).map((post) => post.slug), ['useful-article'])
+  process.env.NODE_ENV = 'production'
+  assert.deepEqual(getSitePosts(directory).map((post) => post.slug), ['useful-article'])
 })

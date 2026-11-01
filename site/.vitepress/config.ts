@@ -2,13 +2,13 @@ import { copyFileSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
-import { getPublishedPosts, postsDirectory } from './posts'
+import { getSitePosts, isDraftPreview, postsDirectory } from './posts'
 import { rebasePostImage } from './post-images'
 import { socialLinks } from '../../src/lib/social'
 import taskLists from 'markdown-it-task-lists'
 
 // Validate before VitePress loads route modules, whose errors can otherwise become warnings.
-const posts = getPublishedPosts()
+const posts = getSitePosts()
 
 export default defineConfig({
   title: 'vitor.run',
@@ -28,7 +28,9 @@ export default defineConfig({
       }, renderer) => {
         const post = posts.find((post) => post.slug === env.frontmatter?.slug)
         const source = tokens[index].attrGet('src')
-        if (post && source) tokens[index].attrSet('src', rebasePostImage(source, post.sourcePath, env.path))
+        if (post && source) tokens[index].attrSet('src', rebasePostImage(
+          source, post.sourcePath, env.path, process.env.NODE_ENV !== 'production',
+        ))
         return renderImage(tokens, index, options, env, renderer)
       }
     },
@@ -44,6 +46,7 @@ export default defineConfig({
     }],
   ],
   themeConfig: {
+    draftPreview: isDraftPreview(),
     sidebar: false,
     aside: false,
     outline: false,

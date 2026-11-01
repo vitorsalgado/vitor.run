@@ -10,5 +10,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["site/**/*.ts", "site/**/*.vue", "playwright.site.config.ts", "scripts/check-content.ts"]
+  "include": ["site/**/*.ts", "site/**/*.vue", "playwright.site.config.ts", "scripts/check-content.ts", "scripts/new-post.test.ts"]
 }

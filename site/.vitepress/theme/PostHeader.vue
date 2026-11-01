@@ -14,6 +14,7 @@ const { frontmatter, params, page } = useData()
       <span aria-current="page">{{ params?.slug ? 'Post' : frontmatter.title }}</span>
     </nav>
     <template v-if="params?.slug">
+      <p v-if="frontmatter.draft" class="draft-badge">Draft · Not published</p>
       <h1>{{ frontmatter.title }}</h1>
       <p class="post-description">{{ frontmatter.description }}</p>
       <div class="post-details">
@@ -22,7 +23,7 @@ const { frontmatter, params, page } = useData()
         }) }}</time>
         <span aria-hidden="true">·</span><span>{{ frontmatter.language.toUpperCase() }}</span>
         <span aria-hidden="true">·</span><span>{{ frontmatter.readTimeMinutes }} min read</span>
-        <span aria-hidden="true">·</span><PostActions />
+        <template v-if="!frontmatter.draft"><span aria-hidden="true">·</span><PostActions /></template>
       </div>
     </template>
   </div>

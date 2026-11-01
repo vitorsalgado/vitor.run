@@ -53,7 +53,11 @@ test('production builds publish, unpublish, and reject invalid content consisten
 
   const build = () => spawnSync(process.execPath, [
     'node_modules/vitepress/bin/vitepress.js', 'build', 'site', '--outDir', output,
-  ], { cwd: root, encoding: 'utf8', timeout: 20_000, maxBuffer: 4 * 1024 * 1024 })
+  ], {
+    cwd: root, encoding: 'utf8', timeout: 20_000, maxBuffer: 4 * 1024 * 1024,
+    // Even an inherited draft flag and development NODE_ENV cannot include drafts in a real build.
+    env: { ...process.env, VITOR_PREVIEW_DRAFTS: '1', NODE_ENV: 'development' },
+  })
   const artifactFiles = () => readdirSync(output, { recursive: true, withFileTypes: true })
     .filter((file) => file.isFile()).map((file) => join(file.parentPath, file.name))
   const assertAbsent = (needles: string[]) => {

@@ -26,5 +26,10 @@ export default defineConfig({
       url: 'http://127.0.0.1:5174',
       reuseExistingServer: false,
     },
+    {
+      command: 'npm run site:dev:drafts',
+      url: 'http://127.0.0.1:5178',
+      reuseExistingServer: false,
+    },
   ],
 })

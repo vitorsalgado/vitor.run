@@ -1,6 +1,6 @@
 import { realpathSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import MarkdownIt from 'markdown-it'
 
 const projectDirectory = fileURLToPath(new URL('../../', import.meta.url))
@@ -44,8 +44,10 @@ export function validatePostImages(content: string, sourcePath: string) {
   }
 }
 
-export function rebasePostImage(source: string, sourcePath: string, pagePath: string) {
+export function rebasePostImage(source: string, sourcePath: string, pagePath: string, development = false) {
   const image = resolvePostImage(source, sourcePath)
   if (!image || image.isPublic) return source
+  // Vue's dev transform resolves relative URLs under the site root, not the filesystem.
+  if (development) return '/@fs' + pathToFileURL(image.path).pathname + image.suffix
   return relative(dirname(pagePath), image.path).split(sep).map(encodeURIComponent).join('/') + image.suffix
 }

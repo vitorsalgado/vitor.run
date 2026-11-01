@@ -6,11 +6,13 @@ import HomePage from './HomePage.vue'
 import PostHeader from './PostHeader.vue'
 import PostFooter from './PostFooter.vue'
 import MobileMenuFocus from './MobileMenuFocus.vue'
+import DraftPreviewBanner from './DraftPreviewBanner.vue'
 import './style.css'
 
 export default {
   extends: DefaultTheme,
   Layout: () => h(DefaultTheme.Layout, null, {
+    'layout-top': () => h(DraftPreviewBanner),
     'doc-before': () => h(PostHeader),
     'doc-after': () => h(PostFooter),
     'nav-screen-content-after': () => h(MobileMenuFocus),

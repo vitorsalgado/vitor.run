@@ -10,7 +10,7 @@ const { frontmatter, params } = useData()
     <nav v-if="frontmatter.tags.length" class="tag-list" aria-label="Post tags">
       <a v-for="tag in frontmatter.tags" :key="tag" :href="`/tags/${encodeURIComponent(tag)}/`">{{ tag }}</a>
     </nav>
-    <DisqusComments :key="params.slug" :identifier="String(params.slug)"
+    <DisqusComments v-if="!frontmatter.draft" :key="params.slug" :identifier="String(params.slug)"
       :title="frontmatter.title" :language="frontmatter.language" />
   </footer>
 </template>
