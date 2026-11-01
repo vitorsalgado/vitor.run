@@ -56,7 +56,7 @@ test('production builds publish, unpublish, and reject invalid content consisten
   ], {
     cwd: root, encoding: 'utf8', timeout: 20_000, maxBuffer: 4 * 1024 * 1024,
     // Even an inherited draft flag and development NODE_ENV cannot include drafts in a real build.
-    env: { ...process.env, VITOR_PREVIEW_DRAFTS: '1', NODE_ENV: 'development' },
+    env: { ...process.env, VITOR_PREVIEW_DRAFTS: '1', VITOR_PRODUCTION: '1', NODE_ENV: 'development' },
   })
   const artifactFiles = () => readdirSync(output, { recursive: true, withFileTypes: true })
     .filter((file) => file.isFile()).map((file) => join(file.parentPath, file.name))
@@ -76,6 +76,11 @@ test('production builds publish, unpublish, and reject invalid content consisten
   assert.ok(html.includes('Publication lifecycle body.'))
   assert.ok(html.includes('PT-BR'))
   assert.ok(html.includes('https://vitor.run/blog/'))
+  assert.ok(html.includes('<html lang="pt-BR"'))
+  assert.ok(html.includes('content="index, follow"'))
+  for (const file of ['rss.xml', 'sitemap.xml']) {
+    assert.ok(readFileSync(join(output, file), 'utf8').includes(`/blog/${slug}/`))
+  }
   const bundledImages = new Set<string>()
   for (const alt of ['Published content image', 'Reference content image', 'Public content image']) {
     const image = html.match(new RegExp(`<img\\b[^>]*alt="${alt}"[^>]*>`))?.[0]

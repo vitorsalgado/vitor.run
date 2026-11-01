@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { SITE } from '../lib/site'
+import avatarUrl from '../assets/avatar.jpeg'
 
 export type PageType = 'website' | 'article'
 
@@ -147,7 +148,7 @@ export function PageMeta({
 
     const imageUrl =
       (image && toAbsoluteUrl(image, origin)) ||
-      (SITE.image && toAbsoluteUrl(SITE.image, origin)) ||
+      toAbsoluteUrl(avatarUrl, origin) ||
       ''
 
     const setMeta = (nameOrProp: string, content: string, attribute: 'name' | 'property' = 'name') => {

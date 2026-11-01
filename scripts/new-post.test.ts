@@ -13,7 +13,7 @@ function fixture(t: TestContext) {
   t.after(() => rmSync(directory, { recursive: true, force: true }))
   for (const child of ['scripts', 'blog', 'elsewhere']) mkdirSync(join(directory, child))
   copyFileSync(join(root, 'scripts/new-post.mjs'), join(directory, 'scripts/new-post.mjs'))
-  for (const child of ['node_modules', 'site']) symlinkSync(join(root, child), join(directory, child), 'dir')
+  for (const child of ['node_modules', 'site', 'src']) symlinkSync(join(root, child), join(directory, child), 'dir')
   const script = join(directory, 'scripts/new-post.mjs')
   const options = { cwd: join(directory, 'elsewhere'), encoding: 'utf8' as const }
   return {

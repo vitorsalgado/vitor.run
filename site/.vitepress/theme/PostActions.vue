@@ -2,12 +2,12 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
 import { Link, Share2 } from '@lucide/vue'
-import { SITE } from '../../../src/lib/site'
+import { siteUrl } from '../../../src/lib/site'
 
 const { frontmatter } = useData()
 const share = ref<HTMLDetailsElement>()
 const status = ref('')
-const url = computed(() => `${SITE.url}/blog/${frontmatter.value.slug}/`)
+const url = computed(() => siteUrl(`/blog/${frontmatter.value.slug}/`))
 const linkedIn = computed(() => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url.value)}`)
 const x = computed(() => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url.value)}&text=${encodeURIComponent(frontmatter.value.title)}`)
 

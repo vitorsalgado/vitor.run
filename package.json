@@ -13,7 +13,7 @@
     "site:dev": "vitepress dev site --host 127.0.0.1 --port 5174",
     "site:dev:drafts": "node scripts/dev-drafts.mjs",
     "content:check": "node scripts/check-content.ts",
-    "content:test": "node --test --test-concurrency=1 site/.vitepress/posts.test.ts site/.vitepress/posts-build.test.ts scripts/new-post.test.ts",
+    "content:test": "node --test --test-concurrency=1 site/.vitepress/posts.test.ts site/.vitepress/posts-build.test.ts site/.vitepress/seo.test.ts scripts/new-post.test.ts",
     "site:build": "npm run content:check && vue-tsc --noEmit -p tsconfig.site.json && vitepress build site",
     "site:preview": "vitepress preview site --host 127.0.0.1 --port 4176",
     "site:test": "playwright test --config playwright.site.config.ts",

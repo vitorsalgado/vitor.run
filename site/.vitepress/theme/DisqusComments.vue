@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
-import { SITE } from '../../../src/lib/site'
+import { SITE, siteUrl } from '../../../src/lib/site'
 
 const props = defineProps<{ identifier: string; title: string; language: string }>()
 const { isDark } = useData()
@@ -21,9 +21,9 @@ function loadThread() {
   const target = window as DisqusWindow
   const config: DisqusConfig = function () {
     this.page.identifier = props.identifier
-    this.page.url = `${SITE.url}/blog/${props.identifier}/`
-    this.page.title = props.title
-    this.language = props.language
+    this.page.url = siteUrl(`/blog/${props.identifier}/`)
+    this.page.title = Array.from(props.title).slice(0, 200).join('')
+    this.language = props.language.replaceAll('-', '_')
   }
   target.disqus_config = config
   if (target.DISQUS) {

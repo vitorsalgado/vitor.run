@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
 import { stringify } from 'yaml'
 import { getPostSources, isPostSlug } from '../site/.vitepress/posts.ts'
+import { SITE } from '../src/lib/site.ts'
 
 const usage = 'Usage: npm run new:post -- "Post title" [--slug my-slug]'
 
@@ -32,7 +33,7 @@ try {
     const now = new Date()
     const date = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-')
     const filepath = join(postsDir, `${date}-${slug}.md`)
-    const content = `---\n${stringify({ title, slug, date, language: 'en', description: '', tags: [], draft: true })}---\n\n`
+    const content = `---\n${stringify({ title, slug, date, language: SITE.language, description: '', tags: [], draft: true })}---\n\n`
     writeFileSync(filepath, content, { encoding: 'utf8', flag: 'wx' })
     console.log(`[new-post] Created draft: ${filepath}\nPreview: npm run site:dev:drafts\nPublish: write the body, set draft: false, then run npm run content:check and npm run site:build.`)
   }

@@ -118,6 +118,7 @@ test('draft slugs do not reserve published URLs', (t) => {
 
 for (const [field, value] of [
   ['title', 'TODO'], ['description', 'TODO'], ['description', 42],
+  ['title', 'A closing </SCRIPT> example'], ['description', 'An unsafe </script> description'],
   ['tags', 'tech'], ['tags', ['']], ['tags', [42]], ['tags', ['../private']],
   ['slug', '../private'], ['slug', 'two/posts'], ['language', 'not_a_language'],
   ['drfat', true],

@@ -92,6 +92,7 @@ function getPosts(directory: string, includeDrafts: boolean): (Post & { sourcePa
         return value.trim()
       }
       const title = requiredText('title')
+      if (/<\/script/i.test(title)) fail('title', 'must not contain a closing script tag (VitePress 1 limitation)')
       if (!draft && /^(TODO|TBD)$/i.test(title)) fail('title', 'must be replaced before publishing')
       const slug = requiredText('slug')
       if (!isPostSlug(slug)) {
@@ -119,6 +120,7 @@ function getPosts(directory: string, includeDrafts: boolean): (Post & { sourcePa
         fail('description', 'must be a string when provided')
       }
       const description = typeof data.description === 'string' ? data.description.trim() : ''
+      if (/<\/script/i.test(description)) fail('description', 'must not contain a closing script tag (VitePress 1 limitation)')
       if (!draft && /^(TODO|TBD)$/i.test(description)) fail('description', 'must be replaced before publishing')
 
       if (data.tags !== undefined && !Array.isArray(data.tags)) fail('tags', 'must be an array of strings')
