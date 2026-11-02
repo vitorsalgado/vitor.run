@@ -12,23 +12,44 @@ import './style.css'
 
 export default {
   extends: DefaultTheme,
-  Layout: () => h(DefaultTheme.Layout, null, {
-    'layout-top': () => h(DraftPreviewBanner),
-    'layout-bottom': () => h(Analytics),
-    'doc-before': () => h(PostHeader),
-    'doc-after': () => h(PostFooter),
-    'nav-screen-content-after': () => h(MobileMenuFocus),
-  }),
+  Layout: () => {
+    return h(DefaultTheme.Layout, null, {
+      'layout-top': () => {
+        return h(DraftPreviewBanner)
+      },
+      'layout-bottom': () => {
+        return h(Analytics)
+      },
+      'doc-before': () => {
+        return h(PostHeader)
+      },
+      'doc-after': () => {
+        return h(PostFooter)
+      },
+      'nav-screen-content-after': () => {
+        return h(MobileMenuFocus)
+      },
+    })
+  },
   setup() {
     const { frontmatter, site, page } = useData()
     // Runtime 404 data has no compiled head; keep it in VitePress's head lifecycle.
-    watch(() => page.value.isNotFound, (missing) => {
-      if (missing) frontmatter.value.head = [['meta', { name: 'robots', content: 'noindex, nofollow' }]]
-    }, { immediate: true, flush: 'sync' })
-    // VitePress 1 tracks site locales, while posts keep their existing language field.
-    onMounted(() => watchPostEffect(() => {
-      document.documentElement.lang = frontmatter.value.lang ?? site.value.lang
-    }))
+    watch(
+      () => {
+        return page.value.isNotFound
+      },
+      (missing) => {
+        if (missing)
+          frontmatter.value.head = [['meta', { name: 'robots', content: 'noindex, nofollow' }]]
+      },
+      { immediate: true, flush: 'sync' },
+    )
+    // Posts keep their own language independently of the site's navigation locale.
+    onMounted(() => {
+      return watchPostEffect(() => {
+        document.documentElement.lang = frontmatter.value.lang ?? site.value.lang
+      })
+    })
   },
   enhanceApp({ app }) {
     app.component('HomePage', HomePage)

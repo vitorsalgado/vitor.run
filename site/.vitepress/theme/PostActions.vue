@@ -2,14 +2,20 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
 import { Link, Share2 } from '@lucide/vue'
-import { siteUrl } from '../../../src/lib/site'
+import { siteUrl } from '../../../src/lib/site.ts'
 
 const { frontmatter } = useData()
 const share = ref<HTMLDetailsElement>()
 const status = ref('')
-const url = computed(() => siteUrl(`/blog/${frontmatter.value.slug}/`))
-const linkedIn = computed(() => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url.value)}`)
-const x = computed(() => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url.value)}&text=${encodeURIComponent(frontmatter.value.title)}`)
+const url = computed(() => {
+  return siteUrl(`/blog/${frontmatter.value.slug}/`)
+})
+const linkedIn = computed(() => {
+  return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url.value)}`
+})
+const x = computed(() => {
+  return `https://twitter.com/intent/tweet?url=${encodeURIComponent(url.value)}&text=${encodeURIComponent(frontmatter.value.title)}`
+})
 
 async function copyLink() {
   try {
@@ -32,8 +38,12 @@ watch(url, () => {
   status.value = ''
   if (share.value) share.value.open = false
 })
-onMounted(() => document.addEventListener('pointerdown', closeShare))
-onUnmounted(() => document.removeEventListener('pointerdown', closeShare))
+onMounted(() => {
+  return document.addEventListener('pointerdown', closeShare)
+})
+onUnmounted(() => {
+  return document.removeEventListener('pointerdown', closeShare)
+})
 </script>
 
 <template>
@@ -42,9 +52,13 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeShare))
       <Link :size="18" aria-hidden="true" />
     </button>
     <details ref="share" class="post-share" @keydown.esc.prevent="escapeShare">
-      <summary aria-label="Share post" title="Share post"><Share2 :size="18" aria-hidden="true" /></summary>
+      <summary aria-label="Share post" title="Share post">
+        <Share2 :size="18" aria-hidden="true" />
+      </summary>
       <nav aria-label="Share options">
-        <a :href="linkedIn" target="_blank" rel="noopener noreferrer" @click="share!.open = false">LinkedIn</a>
+        <a :href="linkedIn" target="_blank" rel="noopener noreferrer" @click="share!.open = false"
+          >LinkedIn</a
+        >
         <a :href="x" target="_blank" rel="noopener noreferrer" @click="share!.open = false">X</a>
       </nav>
     </details>

@@ -12,21 +12,28 @@ function resolvePostImage(source: string, sourcePath: string) {
   function fail(message: string): never {
     throw new Error(`${sourcePath}: image ${JSON.stringify(source)} ${message}`)
   }
-  if (!source || /^[a-z][a-z0-9+.-]*:/i.test(source)) fail('must be a local image or an HTTP(S)/data URL')
+  if (!source || /^[a-z][a-z0-9+.-]*:/i.test(source))
+    fail('must be a local image or an HTTP(S)/data URL')
 
   const suffixStart = source.search(/[?#]/)
   const pathname = suffixStart === -1 ? source : source.slice(0, suffixStart)
   const suffix = suffixStart === -1 ? '' : source.slice(suffixStart)
   let decoded: string
-  try { decoded = decodeURIComponent(pathname) }
-  catch { fail('has invalid URL encoding') }
+  try {
+    decoded = decodeURIComponent(pathname)
+  } catch {
+    fail('has invalid URL encoding')
+  }
 
   const isPublic = pathname.startsWith('/')
   const root = isPublic ? publicDirectory : projectDirectory
   const path = isPublic ? resolve(root, `.${decoded}`) : resolve(dirname(sourcePath), decoded)
   let actualPath: string
-  try { actualPath = realpathSync(path) }
-  catch { fail('does not exist') }
+  try {
+    actualPath = realpathSync(path)
+  } catch {
+    fail('does not exist')
+  }
   const distance = relative(root, actualPath)
   if (isAbsolute(distance) || distance === '..' || distance.startsWith(`..${sep}`)) {
     fail(isPublic ? 'must stay inside site/public' : 'must stay inside the project directory')
@@ -44,10 +51,18 @@ export function validatePostImages(content: string, sourcePath: string) {
   }
 }
 
-export function rebasePostImage(source: string, sourcePath: string, pagePath: string, development = false) {
+export function rebasePostImage(
+  source: string,
+  sourcePath: string,
+  pagePath: string,
+  development = false,
+) {
   const image = resolvePostImage(source, sourcePath)
   if (!image || image.isPublic) return source
   // Vue's dev transform resolves relative URLs under the site root, not the filesystem.
   if (development) return '/@fs' + pathToFileURL(image.path).pathname + image.suffix
-  return relative(dirname(pagePath), image.path).split(sep).map(encodeURIComponent).join('/') + image.suffix
+  return (
+    relative(dirname(pagePath), image.path).split(sep).map(encodeURIComponent).join('/') +
+    image.suffix
+  )
 }

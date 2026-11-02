@@ -1,7 +1,17 @@
-import { getSitePosts } from '../../.vitepress/posts'
+import { getSitePosts } from '../../.vitepress/posts.ts'
 
 export default {
-  paths: () => [...new Set(getSitePosts().flatMap((post) => post.meta.tags))]
-    .sort()
-    .map((tag) => ({ params: { tag: tag.toLowerCase() } })),
+  paths: () => {
+    return [
+      ...new Set(
+        getSitePosts().flatMap((post) => {
+          return post.meta.tags
+        }),
+      ),
+    ]
+      .sort()
+      .map((tag) => {
+        return { params: { tag: tag.toLowerCase() } }
+      })
+  },
 }

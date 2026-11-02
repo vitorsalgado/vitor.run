@@ -1,9 +1,13 @@
-import type { PostMeta } from '../src/lib/posts'
-import { getSitePosts } from './.vitepress/posts'
+import type { PostMeta } from '../src/lib/posts.ts'
+import { getSitePosts } from './.vitepress/posts.ts'
 
 export declare const data: PostMeta[]
 
 export default {
   watch: ['../blog/*.md'],
-  load: () => getSitePosts().map((post) => post.meta),
+  load: () => {
+    return getSitePosts().map((post) => {
+      return post.meta
+    })
+  },
 }

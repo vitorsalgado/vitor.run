@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import matter from 'gray-matter'
 import { parseDocument } from 'yaml'
-import type { Post } from '../../src/lib/posts'
+import type { Post } from '../../src/lib/posts.ts'
 import { getReadTimeMinutes } from '../../src/lib/read-time.ts'
 import { validatePostImages } from './post-images.ts'
 
@@ -12,7 +12,9 @@ export const postsDirectory = fileURLToPath(new URL('../../blog/', import.meta.u
 /** Read strict YAML once for both publication validation and post creation. */
 export function getPostSources(directory = postsDirectory) {
   return readdirSync(directory)
-    .filter((file) => file.endsWith('.md'))
+    .filter((file) => {
+      return file.endsWith('.md')
+    })
     .sort()
     .map((file) => {
       const sourcePath = join(directory, file)
@@ -43,7 +45,10 @@ export function getPostSources(directory = postsDirectory) {
           },
         })
       } catch (error) {
-        throw new Error(`${sourcePath}: invalid YAML frontmatter: ${error instanceof Error ? error.message : String(error)}`)
+        throw new Error(
+          `${sourcePath}: invalid YAML frontmatter: ${error instanceof Error ? error.message : String(error)}`,
+          { cause: error },
+        )
       }
 
       const data: Record<string, unknown> = parsed.data
@@ -92,7 +97,6 @@ function getPosts(directory: string, includeDrafts: boolean): (Post & { sourcePa
         return value.trim()
       }
       const title = requiredText('title')
-      if (/<\/script/i.test(title)) fail('title', 'must not contain a closing script tag (VitePress 1 limitation)')
       if (!draft && /^(TODO|TBD)$/i.test(title)) fail('title', 'must be replaced before publishing')
       const slug = requiredText('slug')
       if (!isPostSlug(slug)) {
@@ -104,8 +108,11 @@ function getPosts(directory: string, includeDrafts: boolean): (Post & { sourcePa
 
       const date = requiredText('date')
       const timestamp = Date.parse(date)
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(timestamp)
-        || new Date(timestamp).toISOString().slice(0, 10) !== date) {
+      if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+        !Number.isFinite(timestamp) ||
+        new Date(timestamp).toISOString().slice(0, 10) !== date
+      ) {
         fail('date', 'must be a real calendar date in YYYY-MM-DD format')
       }
 
@@ -120,37 +127,47 @@ function getPosts(directory: string, includeDrafts: boolean): (Post & { sourcePa
         fail('description', 'must be a string when provided')
       }
       const description = typeof data.description === 'string' ? data.description.trim() : ''
-      if (/<\/script/i.test(description)) fail('description', 'must not contain a closing script tag (VitePress 1 limitation)')
-      if (!draft && /^(TODO|TBD)$/i.test(description)) fail('description', 'must be replaced before publishing')
+      if (!draft && /^(TODO|TBD)$/i.test(description))
+        fail('description', 'must be replaced before publishing')
 
-      if (data.tags !== undefined && !Array.isArray(data.tags)) fail('tags', 'must be an array of strings')
-      const tags = [...new Set(((data.tags ?? []) as unknown[]).map((value, index) => {
-        if (typeof value !== 'string' || !value.trim()) fail(`tags[${index}]`, 'must be a nonempty string')
-        const tag = value.trim().toLowerCase().normalize('NFC')
-        if (/[\\/?#%]|\p{Cc}/u.test(tag) || tag === '.' || tag === '..') {
-          fail(`tags[${index}]`, 'must not contain path or URL delimiters')
-        }
-        return tag
-      }))]
+      if (data.tags !== undefined && !Array.isArray(data.tags))
+        fail('tags', 'must be an array of strings')
+      const tags = [
+        ...new Set(
+          ((data.tags ?? []) as unknown[]).map((value, index) => {
+            if (typeof value !== 'string' || !value.trim())
+              fail(`tags[${index}]`, 'must be a nonempty string')
+            const tag = value.trim().toLowerCase().normalize('NFC')
+            if (/[\\/?#%]|\p{Cc}/u.test(tag) || tag === '.' || tag === '..') {
+              fail(`tags[${index}]`, 'must not contain path or URL delimiters')
+            }
+            return tag
+          }),
+        ),
+      ]
 
       if (!draft && !content.trim()) fail('content', 'must not be empty for a published post')
       validatePostImages(content, sourcePath)
 
-      return [{
-        slug,
-        sourcePath,
-        content,
-        meta: {
-          ...(draft && { draft: true }),
-          title,
+      return [
+        {
           slug,
-          date,
-          description,
-          language,
-          tags,
-          readTimeMinutes: getReadTimeMinutes(content),
+          sourcePath,
+          content,
+          meta: {
+            ...(draft && { draft: true }),
+            title,
+            slug,
+            date,
+            description,
+            language,
+            tags,
+            readTimeMinutes: getReadTimeMinutes(content),
+          },
         },
-      }]
+      ]
     })
-    .sort((a, b) => b.meta.date.localeCompare(a.meta.date) || a.slug.localeCompare(b.slug, 'en'))
+    .sort((a, b) => {
+      return b.meta.date.localeCompare(a.meta.date) || a.slug.localeCompare(b.slug, 'en')
+    })
 }

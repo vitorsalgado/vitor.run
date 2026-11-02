@@ -8,9 +8,16 @@ const { frontmatter, params } = useData()
 <template>
   <footer v-if="params?.slug" class="post-footer">
     <nav v-if="frontmatter.tags.length" class="tag-list" aria-label="Post tags">
-      <a v-for="tag in frontmatter.tags" :key="tag" :href="`/tags/${encodeURIComponent(tag)}/`">{{ tag }}</a>
+      <a v-for="tag in frontmatter.tags" :key="tag" :href="`/tags/${encodeURIComponent(tag)}/`">{{
+        tag
+      }}</a>
     </nav>
-    <DisqusComments v-if="!frontmatter.draft" :key="params.slug" :identifier="String(params.slug)"
-      :title="frontmatter.title" :language="frontmatter.language" />
+    <DisqusComments
+      v-if="!frontmatter.draft"
+      :key="params.slug"
+      :identifier="String(params.slug)"
+      :title="frontmatter.title"
+      :language="frontmatter.language"
+    />
   </footer>
 </template>

@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict'
 import { execFile, spawnSync } from 'node:child_process'
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import {
+  copyFileSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from 'node:fs'
 import { join } from 'node:path'
 import { test, type TestContext } from 'node:test'
 import { promisify } from 'node:util'
@@ -10,15 +19,22 @@ function fixture(t: TestContext) {
   const root = process.cwd()
   mkdirSync('.local', { recursive: true })
   const directory = mkdtempSync(join(root, '.local/new-post-'))
-  t.after(() => rmSync(directory, { recursive: true, force: true }))
+  t.after(() => {
+    return rmSync(directory, { recursive: true, force: true })
+  })
   for (const child of ['scripts', 'blog', 'elsewhere']) mkdirSync(join(directory, child))
   copyFileSync(join(root, 'scripts/new-post.mjs'), join(directory, 'scripts/new-post.mjs'))
-  for (const child of ['node_modules', 'site', 'src']) symlinkSync(join(root, child), join(directory, child), 'dir')
+  for (const child of ['node_modules', 'site', 'src'])
+    symlinkSync(join(root, child), join(directory, child), 'dir')
   const script = join(directory, 'scripts/new-post.mjs')
   const options = { cwd: join(directory, 'elsewhere'), encoding: 'utf8' as const }
   return {
-    directory: join(directory, 'blog'), script, options,
-    run: (...args: string[]) => spawnSync(process.execPath, [script, ...args], options),
+    directory: join(directory, 'blog'),
+    script,
+    options,
+    run: (...args: string[]) => {
+      return spawnSync(process.execPath, [script, ...args], options)
+    },
   }
 }
 
@@ -36,8 +52,13 @@ test('new posts are unpublished, safely serialize titles, and need a body before
   assert.deepEqual(source.data.tags, [])
   assert.equal(source.content.trim(), '')
   assert.deepEqual(getPublishedPosts(directory), [])
-  writeFileSync(source.sourcePath, readFileSync(source.sourcePath, 'utf8').replace('draft: true', 'draft: false'))
-  assert.throws(() => getPublishedPosts(directory), /"content" must not be empty/)
+  writeFileSync(
+    source.sourcePath,
+    readFileSync(source.sourcePath, 'utf8').replace('draft: true', 'draft: false'),
+  )
+  assert.throws(() => {
+    return getPublishedPosts(directory)
+  }, /"content" must not be empty/)
 })
 
 test('a title cannot inject publication metadata through YAML', (t) => {
@@ -84,16 +105,33 @@ test('simultaneous creation of the same post has one winner and preserves its dr
     execute(process.execPath, [script, 'Concurrent post'], options),
     execute(process.execPath, [script, 'Concurrent post'], options),
   ])
-  assert.equal(results.filter((result) => result.status === 'fulfilled').length, 1)
-  assert.equal(results.filter((result) => result.status === 'rejected').length, 1)
+  assert.equal(
+    results.filter((result) => {
+      return result.status === 'fulfilled'
+    }).length,
+    1,
+  )
+  assert.equal(
+    results.filter((result) => {
+      return result.status === 'rejected'
+    }).length,
+    1,
+  )
   const [source] = getPostSources(directory)
   assert.equal(readdirSync(directory).length, 1)
   assert.equal(source.data.title, 'Concurrent post')
   assert.equal(source.data.draft, true)
 })
 
-for (const args of [[], [''], ['Unquoted', 'title'], ['Title', '--slug', '../escape'],
-  ['Title', '--slug', 'Uppercase'], ['日本語'], ['Title', '--unknown']]) {
+for (const args of [
+  [],
+  [''],
+  ['Unquoted', 'title'],
+  ['Title', '--slug', '../escape'],
+  ['Title', '--slug', 'Uppercase'],
+  ['日本語'],
+  ['Title', '--unknown'],
+]) {
   test(`invalid arguments ${JSON.stringify(args)} create no files`, (t) => {
     const { directory, run } = fixture(t)
     const result = run(...args)

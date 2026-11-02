@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
-import { SITE, siteUrl } from '../../../src/lib/site'
+import { SITE, siteUrl } from '../../../src/lib/site.ts'
 
 const props = defineProps<{ identifier: string; title: string; language: string }>()
 const { isDark } = useData()
@@ -50,10 +50,14 @@ onMounted(() => {
   enabled.value = Boolean(SITE.disqusShortname) && window.location.origin === SITE.url
   loadThread()
 })
-watch(isDark, async () => {
-  await nextTick()
-  loadThread()
-}, { flush: 'post' })
+watch(
+  isDark,
+  async () => {
+    await nextTick()
+    loadThread()
+  },
+  { flush: 'post' },
+)
 onUnmounted(() => {
   enabled.value = false
   const target = window as DisqusWindow
@@ -66,6 +70,8 @@ onUnmounted(() => {
     <h2>Comments</h2>
     <div id="disqus_thread" />
     <p v-if="!enabled">Comments are available on the published website with JavaScript enabled.</p>
-    <p v-if="failed" role="status">Comments could not be loaded. Please reload the page to try again.</p>
+    <p v-if="failed" role="status">
+      Comments could not be loaded. Please reload the page to try again.
+    </p>
   </section>
 </template>

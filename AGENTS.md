@@ -1,76 +1,66 @@
 # AGENTS.md
 
-Guidance for AI agents working on this project.
+Guidance for agents working on this project.
 
 ## Tech Stack
 
-- **Build**: Vite (rolldown), React 19, TypeScript
-- **Styling**: Tailwind CSS v4
-- **Routing**: React Router v7
-- **Content**: Markdown with YAML frontmatter, parsed at build time via gray-matter
-- **Markdown**: react-markdown + remark-gfm
+- **Runtime**: Node.js 24, npm.
+- **Site**: VitePress 2.0.0-alpha.21, Vue 3, TypeScript.
+- **Styling**: VitePress default theme extended with components and CSS.
+- **Content**: Markdown with strict YAML frontmatter, validated at build time.
+- **Markdown**: VitePress with task lists and a Gradle language alias.
 
 ## Project Structure
 
 ```
-blog/            # Blog posts (*.md)
+blog/                  # Original post Markdown and relative images
+site/                  # Static pages and dynamic post/tag routes
+  .vitepress/          # Configuration, content model, SEO, publication files, theme
+  public/              # Always-public assets
 src/
-  components/    # Layout, Navbar, PageMeta, Breadcrumbs, Tags, SocialLinks, ThemeToggle, ReadTime
-  content/
-    about.md     # About page content
-  lib/           # posts.ts, post-icons.tsx, site.ts, social.ts, about.ts, read-time.ts
-  pages/         # Home, About, Blog, BlogPost, Contact, NotFound
+  assets/avatar.jpeg   # Shared author image
+  lib/                 # Site/social configuration, post types, read time, icon names
+public/                # Existing favicon, 404, domain, and policy files copied by build
+scripts/               # Post creation, draft preview, static preview, verification
+e2e/                  # Playwright publication and interaction tests
 ```
 
-## Blog
+## Content and Routes
 
-- **Content**: Add `.md` files in `blog/` (project root) with required frontmatter: `title`, `slug`, `date`, `language`, and optional `description`, `tags`.
-- **Loading**: Posts are loaded at build time via `import.meta.glob` — no runtime fetch.
-- **API**: `getPosts()`, `getPost(slug)`, `getAllTags(posts)`, `filterPostsByTag(posts, tag)` from `src/lib/posts.ts`.
-- **Routes**: `/blog` (list), `/blog/:slug` (post), `/tags/:tag` (filtered list).
+- Keep posts in `blog/*.md`. Required: `title`, `slug`, `date`, `language`. Optional: `description`, `tags`, `draft`.
+- The shared Node-only model is `site/.vitepress/posts.ts`: `getPostSources()`, `getPublishedPosts()`, and `getSitePosts()`.
+- `src/lib/posts.ts` contains types only. Never import raw posts into browser code.
+- `draft: true` excludes a post before production routes, data, images, SEO, and feeds are generated. A future date does not schedule publication.
+- `getPublishedPosts()` always excludes drafts. `getSitePosts()` includes them only in the local draft preview, never in a build.
+- Do not bypass strict YAML, date, slug, language, or image validation.
+- Routes use trailing slashes: `/blog/`, `/blog/:slug/`, `/tags/:tag/`, `/about/`, `/contact/`.
+- Relative post images resolve from the original Markdown file. Root-relative images resolve from `site/public`, which is always public.
+- About is authored in `site/about/index.md`; Contact uses the shared site configuration.
 
-## Site Config
+## Configuration and Theme
 
-- `src/lib/site.ts`: Site name, author, email, avatar, social links, `disqusShortname`. Used by PageMeta, Contact, DisqusComments, etc.
-- `src/lib/social.ts`: Social links config for SocialLinks component.
+- `src/lib/site.ts` owns the site identity, canonical origin, language, contact details, social image, Disqus shortname, and GA4 ID.
+- `src/lib/social.ts` owns social links. `src/lib/post-icon-names.ts` maps the first tag to its icon.
+- Extend the public VitePress default-theme API and layout slots. Do not copy or override internal default-theme components.
+- Styles are in `site/.vitepress/theme/style.css`. Dark mode uses the native class and the localStorage key `theme`.
+- Use accessible names for icon-only controls, keyboard interactions, and navigation.
+- Disqus uses stable post slugs as identifiers and loads only on the canonical production origin. Preserve identifiers when editing posts.
+- Analytics initializes once on the production origin; GA4 owns automatic page views. Do not add duplicate manual page-view events.
 
-## Styling & Theming
+## Build and Verification
 
-- **Tailwind**: `src/index.css` imports Tailwind and defines `@theme` variables.
-- **Dark mode**: Class-based (add `.dark` to `<html>`). ThemeToggle persists to localStorage.
-- **Navbar**: Styles use `--nav-link-color`, `--nav-link-active-color`, `--nav-link-hover-bg`, `--nav-link-active-underline`.
-- **Accent**: `--color-accent`, `--color-accent-link` for links and focus states.
-
-## Disqus
-
-- **DisqusComments** (`src/components/DisqusComments.tsx`): Renders Disqus thread on blog posts. Uses `SITE.disqusShortname` from `site.ts`. Set to empty string to disable. Uses `disqus-react` package.
-
-## Post Icons
-
-- `PostIcon` in `src/lib/post-icons.tsx` maps the **first tag** (lowercase) to a Lucide icon via `TAG_ICON_MAP`.
-- Add new tag→icon mappings in `TAG_ICON_MAP`. Use `createElement` to avoid "components during render" lint errors.
-
-## SEO & Meta
-
-- **PageMeta**: Sets title, description, canonical, OG, Twitter, keywords, JSON-LD. Supports breadcrumb list.
-- **Breadcrumbs**: Optional UI + BreadcrumbList JSON-LD.
-
-## Build & Scripts
-
-- `npm run build`: TypeScript, Vite build, then `scripts/generate-static-paths.mjs`, `scripts/rss.mjs`, `scripts/sitemap.mjs`.
-- **generate-static-paths**: Creates `dist/<path>/index.html` for each route (about, blog, blog/:slug, tags/:tag, contact) so GitHub Pages serves 200 OK and SEO is preserved.
-- **Buffer**: gray-matter uses `Buffer`; polyfill is applied in `main.tsx` and aliased in `vite.config.ts`.
-
-## E2E
-
-- Playwright tests in `e2e/`. CI runs `npm run e2e` after build.
-- SPA fallback in Vite ensures routes like `/blog/my-post` serve `index.html` for client-side routing.
-
-## Conventions
-
-- Use `aria-label` for icon-only links.
-- Prose styles in `index.css` for blog post content.
-- Keep files that need Fast Refresh exporting only React components — move shared constants/functions to separate files.
+- `npm run dev` serves published content; `npm run dev:drafts` serves the explicit local draft preview.
+- `npm run new:post -- "Title"` creates an unpublished Markdown file without overwriting existing files or slugs.
+- `npm run build` validates content, checks types, and generates a production artifact in `dist/`.
+- Development is non-indexable. `VITOR_PRODUCTION=0 npm run build` creates a non-indexable artifact; flags must never make a development server indexable.
+- `site/.vitepress/seo.ts` owns metadata/schema. `publication.ts` owns RSS, sitemap, and robots. Do not maintain competing generated copies.
+- The static preview binds to localhost and preserves real redirects, HTTP 404s, and fresh assets after rebuilding.
+- `npm test` checks formatting, lint, content tests, types/build, and Playwright, then verifies the deployment artifact did not change during browser tests.
+- Fixture tests mutate `blog/` and VitePress temporary state: run content and browser suites sequentially. Fixture builds use isolated output directories.
+- CI uses Node 24 and deploys the exact verified artifact after a successful push to `main`.
+- At each milestone, stop for review and propose a commit message. The owner creates the commits.
+- The `minimatch` override pins the patched 11.0.3 release for [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249). ESLint and its TypeScript integrations still request 10.x; verify lint coverage when changing this override and remove it when those dependencies adopt a patched version.
+- Keep milestone reports and release history out of README.md; it documents usage and operation.
 
 ## Rules
 

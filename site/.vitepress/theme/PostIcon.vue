@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CodeXml, FileText, Landmark, MapPin } from '@lucide/vue'
-import { getPostIconName } from '../../../src/lib/post-icon-names'
+import { getPostIconName } from '../../../src/lib/post-icon-names.ts'
 
 const props = defineProps<{ tag?: string }>()
 const icons = { Code2: CodeXml, FileText, Landmark, MapPin }
-const icon = computed(() => icons[getPostIconName(props.tag)])
+const icon = computed(() => {
+  return icons[getPostIconName(props.tag)]
+})
 </script>
 
 <template>

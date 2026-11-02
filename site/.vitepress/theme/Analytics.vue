@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useData } from 'vitepress'
-import { SITE } from '../../../src/lib/site'
+import { SITE } from '../../../src/lib/site.ts'
 
 const { theme } = useData()
 onMounted(() => {
-  if (!theme.value.production || !SITE.googleAnalyticsId || window.location.origin !== SITE.url) return
+  if (!theme.value.production || !SITE.googleAnalyticsId || window.location.origin !== SITE.url)
+    return
   if (document.getElementById('site-analytics')) return
   const target = window as Window & {
     dataLayer?: IArguments[]
     gtag?: (...args: unknown[]) => void
   }
   target.dataLayer ??= []
-  target.gtag ??= function () { target.dataLayer!.push(arguments) }
+  target.gtag ??= function () {
+    target.dataLayer!.push(arguments)
+  }
   target.gtag('js', new Date())
   // GA4 owns initial and history page views.
   target.gtag('config', SITE.googleAnalyticsId)
