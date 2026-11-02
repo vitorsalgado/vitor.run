@@ -84,6 +84,7 @@ export default function config({ command }: { command: 'serve' | 'build' }) {
     themeConfig: {
       production,
       draftPreview: isDraftPreview(),
+      siteTitle: false,
       sidebar: false,
       aside: false,
       outline: false,

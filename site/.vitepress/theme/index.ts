@@ -1,6 +1,7 @@
 import { h, onMounted, watch, watchPostEffect } from 'vue'
 import { useData, type Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
+import { TentTree } from '@lucide/vue'
 import BlogList from './BlogList.vue'
 import HomePage from './HomePage.vue'
 import PostHeader from './PostHeader.vue'
@@ -14,6 +15,17 @@ export default {
   extends: DefaultTheme,
   Layout: () => {
     return h(DefaultTheme.Layout, null, {
+      'nav-bar-title-before': () => {
+        return [
+          h(TentTree, {
+            class: 'brand-icon',
+            size: 24,
+            strokeWidth: 1.5,
+            'aria-hidden': true,
+          }),
+          h('span', { class: 'visually-hidden' }, 'Home'),
+        ]
+      },
       'layout-top': () => {
         return h(DraftPreviewBanner)
       },

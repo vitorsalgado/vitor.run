@@ -13,6 +13,11 @@
   --vp-c-bg: #171717;
 }
 
+.brand-icon {
+  color: var(--vp-c-brand-1);
+  flex-shrink: 0;
+}
+
 :root:has(.draft-preview-banner) {
   --vp-layout-top-height: 40px;
 }
