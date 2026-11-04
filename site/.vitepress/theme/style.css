@@ -18,6 +18,10 @@
   flex-shrink: 0;
 }
 
+.VPNavBar .appearance {
+  order: 1;
+}
+
 :root:has(.draft-preview-banner) {
   --vp-layout-top-height: 40px;
 }
