@@ -52,6 +52,7 @@ ${meta.tags
     '/',
     '/about/',
     '/blog/',
+    '/open-source/',
     '/contact/',
     ...posts.map((post) => {
       return `/blog/${post.slug}/`

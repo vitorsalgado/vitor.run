@@ -93,6 +93,7 @@ export default function config({ command }: { command: 'serve' | 'build' }) {
         { text: 'Home', link: '/' },
         { text: 'About', link: '/about/' },
         { text: 'Blog', link: '/blog/', activeMatch: '^/(blog|tags)/' },
+        { text: 'Open Source', link: '/open-source/' },
         { text: 'Contact', link: '/contact/' },
         { text: 'RSS', link: '/rss.xml' },
       ],

@@ -71,7 +71,9 @@ export function applyPageSeo(page: PageData, production: boolean) {
               ? 'AboutPage'
               : page.relativePath === 'contact/index.md'
                 ? 'ContactPage'
-                : tag || page.relativePath === 'blog/index.md'
+                : tag ||
+                    page.relativePath === 'blog/index.md' ||
+                    page.relativePath === 'open-source/index.md'
                   ? 'CollectionPage'
                   : 'WebPage',
           '@id': canonical,
